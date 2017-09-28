@@ -281,53 +281,53 @@ typedef NSUInteger NSStringEncodingConversionOptions;
  */
 @interface NSString :NSObject <NSCoding, NSCopying, NSMutableCopying>
 
-+ (id) string;
-+ (id) stringWithCharacters: (const unichar*)chars
++ (instancetype) string;
++ (instancetype) stringWithCharacters: (const unichar*)chars
 		     length: (NSUInteger)length;
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_4,GS_API_LATEST) && GS_API_VERSION( 10200,GS_API_LATEST)
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 		encoding: (NSStringEncoding)encoding;
 #endif
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 		  length: (NSUInteger)length;
-+ (id) stringWithCString: (const char*)byteString;
-+ (id) stringWithFormat: (NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
-+ (id) stringWithContentsOfFile:(NSString *)path;
++ (instancetype) stringWithCString: (const char*)byteString;
++ (instancetype) stringWithFormat: (NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
++ (instancetype) stringWithContentsOfFile:(NSString *)path;
 
 // Initializing Newly Allocated Strings
-- (id) init;
+- (instancetype) init;
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_4,GS_API_LATEST) && GS_API_VERSION( 10200,GS_API_LATEST)
-- (id) initWithBytes: (const void*)bytes
+- (instancetype) initWithBytes: (const void*)bytes
 	      length: (NSUInteger)length
 	    encoding: (NSStringEncoding)encoding;
-- (id) initWithBytesNoCopy: (void*)bytes
+- (instancetype) initWithBytesNoCopy: (void*)bytes
 		    length: (NSUInteger)length
 		  encoding: (NSStringEncoding)encoding 
 	      freeWhenDone: (BOOL)flag;
 #endif
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_4,GS_API_LATEST)
-+ (id) stringWithContentsOfFile: (NSString*)path
++ (instancetype) stringWithContentsOfFile: (NSString*)path
                    usedEncoding: (NSStringEncoding*)enc
                           error: (NSError**)error;
-- (id) initWithContentsOfFile: (NSString*)path
+- (instancetype) initWithContentsOfFile: (NSString*)path
                  usedEncoding: (NSStringEncoding*)enc
                         error: (NSError**)error;
-+ (id) stringWithContentsOfFile: (NSString*)path
++ (instancetype) stringWithContentsOfFile: (NSString*)path
                        encoding: (NSStringEncoding)enc
                           error: (NSError**)error;
-- (id) initWithContentsOfFile: (NSString*)path
+- (instancetype) initWithContentsOfFile: (NSString*)path
                      encoding: (NSStringEncoding)enc
                         error: (NSError**)error;
-+ (id) stringWithContentsOfURL: (NSURL*)url
++ (instancetype) stringWithContentsOfURL: (NSURL*)url
                   usedEncoding: (NSStringEncoding*)enc
                          error: (NSError**)error;
-- (id) initWithContentsOfURL: (NSURL*)url
+- (instancetype) initWithContentsOfURL: (NSURL*)url
                 usedEncoding: (NSStringEncoding*)enc
                        error: (NSError**)error;
-+ (id) stringWithContentsOfURL: (NSURL*)url
++ (instancetype) stringWithContentsOfURL: (NSURL*)url
                       encoding: (NSStringEncoding)enc
                          error: (NSError**)error;
-- (id) initWithContentsOfURL: (NSURL*)url
+- (instancetype) initWithContentsOfURL: (NSURL*)url
                     encoding: (NSStringEncoding)enc
                        error: (NSError**)error;
 - (BOOL) writeToFile: (NSString*)path
@@ -349,24 +349,24 @@ typedef NSUInteger NSStringEncodingConversionOptions;
 - (NSString*) stringByReplacingCharactersInRange: (NSRange)aRange 
                                       withString: (NSString*)by;
 #endif
-- (id) initWithCharactersNoCopy: (unichar*)chars
+- (instancetype) initWithCharactersNoCopy: (unichar*)chars
 			 length: (NSUInteger)length
 		   freeWhenDone: (BOOL)flag;
-- (id) initWithCharacters: (const unichar*)chars
+- (instancetype) initWithCharacters: (const unichar*)chars
 		   length: (NSUInteger)length;
-- (id) initWithCStringNoCopy: (char*)byteString
+- (instancetype) initWithCStringNoCopy: (char*)byteString
 		      length: (NSUInteger)length
 	        freeWhenDone: (BOOL)flag;
-- (id) initWithCString: (const char*)byteString
+- (instancetype) initWithCString: (const char*)byteString
 	        length: (NSUInteger)length;
-- (id) initWithCString: (const char*)byteString;
-- (id) initWithString: (NSString*)string;
-- (id) initWithFormat: (NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
-- (id) initWithFormat: (NSString*)format
+- (instancetype) initWithCString: (const char*)byteString;
+- (instancetype) initWithString: (NSString*)string;
+- (instancetype) initWithFormat: (NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
+- (instancetype) initWithFormat: (NSString*)format
 	    arguments: (va_list)argList NS_FORMAT_FUNCTION(1,0);
-- (id) initWithData: (NSData*)data
+- (instancetype) initWithData: (NSData*)data
 	   encoding: (NSStringEncoding)encoding;
-- (id) initWithContentsOfFile: (NSString*)path;
+- (instancetype) initWithContentsOfFile: (NSString*)path;
 
 // Getting a String's Length
 - (NSUInteger) length;
@@ -457,7 +457,7 @@ typedef NSUInteger NSStringEncodingConversionOptions;
 - (BOOL) getCString: (char*)buffer
 	  maxLength: (NSUInteger)maxLength
 	   encoding: (NSStringEncoding)encoding;
-- (id) initWithCString: (const char*)byteString
+- (instancetype) initWithCString: (const char*)byteString
 	      encoding: (NSStringEncoding)encoding;
 - (NSUInteger) lengthOfBytesUsingEncoding: (NSStringEncoding)encoding;
 - (NSUInteger) maximumLengthOfBytesUsingEncoding: (NSStringEncoding)encoding;
@@ -763,16 +763,16 @@ typedef NSUInteger NSStringEncodingConversionOptions;
 + (NSString*) localizedStringWithFormat: (NSString*)format, ...
   NS_FORMAT_FUNCTION(1,2);
 
-+ (id) stringWithString: (NSString*)aString;
-+ (id) stringWithContentsOfURL: (NSURL*)url;
-+ (id) stringWithUTF8String: (const char*)bytes;
-- (id) initWithFormat: (NSString*)format
++ (instancetype) stringWithString: (NSString*)aString;
++ (instancetype) stringWithContentsOfURL: (NSURL*)url;
++ (instancetype) stringWithUTF8String: (const char*)bytes;
+- (instancetype) initWithFormat: (NSString*)format
 	       locale: (NSDictionary*)locale, ... NS_FORMAT_FUNCTION(1,3);
-- (id) initWithFormat: (NSString*)format
+- (instancetype) initWithFormat: (NSString*)format
 	       locale: (NSDictionary*)locale
 	    arguments: (va_list)argList NS_FORMAT_FUNCTION(1,0);
-- (id) initWithUTF8String: (const char *)bytes;
-- (id) initWithContentsOfURL: (NSURL*)url;
+- (instancetype) initWithUTF8String: (const char *)bytes;
+- (instancetype) initWithContentsOfURL: (NSURL*)url;
 - (NSString*) substringWithRange: (NSRange)aRange;
 - (NSComparisonResult) caseInsensitiveCompare: (NSString*)aString;
 - (NSComparisonResult) compare: (NSString*)string 
@@ -853,18 +853,18 @@ typedef NSUInteger NSStringEncodingConversionOptions;
 @interface NSMutableString : NSString
 
 // Creating Temporary Strings
-+ (id) string;
-+ (id) stringWithCharacters: (const unichar*)characters
++ (instancetype) string;
++ (instancetype) stringWithCharacters: (const unichar*)characters
 		     length: (NSUInteger)length;
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 		  length: (NSUInteger)length;
-+ (id) stringWithCString: (const char*)byteString;
-+ (id) stringWithFormat: (NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
-+ (id) stringWithContentsOfFile: (NSString*)path;
++ (instancetype) stringWithCString: (const char*)byteString;
++ (instancetype) stringWithFormat: (NSString*)format, ... NS_FORMAT_FUNCTION(1,2);
++ (instancetype) stringWithContentsOfFile: (NSString*)path;
 + (NSMutableString*) stringWithCapacity: (NSUInteger)capacity;
 
 // Initializing Newly Allocated Strings
-- (id) initWithCapacity: (NSUInteger)capacity;
+- (instancetype) initWithCapacity: (NSUInteger)capacity;
 
 // Modify A String
 - (void) appendFormat: (NSString*)format, ... NS_FORMAT_FUNCTION(1,2);

@@ -818,7 +818,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
     }
 }
 
-+ (id) allocWithZone: (NSZone*)z
++ (instancetype) allocWithZone: (NSZone*)z
 {
   if (self == NSStringClass)
     {
@@ -892,7 +892,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Create an empty string.
  */
-+ (id) string
++ (instancetype) string
 {
   return AUTORELEASE([[self allocWithZone: NSDefaultMallocZone()] init]);
 }
@@ -900,7 +900,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Create a copy of aString.
  */
-+ (id) stringWithString: (NSString*)aString
++ (instancetype) stringWithString: (NSString*)aString
 {
   NSString	*obj;
 
@@ -912,7 +912,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Create a string of unicode characters.
  */
-+ (id) stringWithCharacters: (const unichar*)chars
++ (instancetype) stringWithCharacters: (const unichar*)chars
 		     length: (NSUInteger)length
 {
   NSString	*obj;
@@ -927,7 +927,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * null-terminated and encoded in the default C string encoding.  (Characters
  * will be converted to unicode representation internally.)
  */
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 {
   NSString	*obj;
   unsigned	length = byteString ? strlen(byteString) : 0;
@@ -942,7 +942,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * null-terminated and encoded in the specified C string encoding.
  * Characters may be converted to unicode representation internally.
  */
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 		encoding: (NSStringEncoding)encoding
 {
   NSString	*obj;
@@ -960,7 +960,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * null bytes and should be encoded in the default C string encoding.
  * (Characters will be converted to unicode representation internally.)
  */
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 		  length: (NSUInteger)length
 {
   NSString	*obj;
@@ -974,7 +974,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * Create a string based on the given UTF-8 string, null-terminated.<br />
  * Raises NSInvalidArgumentException if given NULL pointer.
  */
-+ (id) stringWithUTF8String: (const char *)bytes
++ (instancetype) stringWithUTF8String: (const char *)bytes
 {
   NSString	*obj;
 
@@ -998,7 +998,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * containing direct unicode if it begins with the unicode byte order mark,
  * else converts to unicode using default C string encoding.
  */
-+ (id) stringWithContentsOfFile: (NSString *)path
++ (instancetype) stringWithContentsOfFile: (NSString *)path
 {
   NSString	*obj;
 
@@ -1011,7 +1011,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * Load contents of file at path into a new string using the
  * -initWithContentsOfFile:usedEncoding:error: method.
  */
-+ (id) stringWithContentsOfFile: (NSString *)path
++ (instancetype) stringWithContentsOfFile: (NSString *)path
                    usedEncoding: (NSStringEncoding*)enc
                           error: (NSError**)error
 {
@@ -1026,7 +1026,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * Load contents of file at path into a new string using the
  * -initWithContentsOfFile:encoding:error: method.
  */
-+ (id) stringWithContentsOfFile: (NSString*)path
++ (instancetype) stringWithContentsOfFile: (NSString*)path
                        encoding: (NSStringEncoding)enc
                           error: (NSError**)error
 {
@@ -1042,7 +1042,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * containing direct unicode if it begins with the unicode byte order mark,
  * else converts to unicode using default C string encoding.
  */
-+ (id) stringWithContentsOfURL: (NSURL *)url
++ (instancetype) stringWithContentsOfURL: (NSURL *)url
 {
   NSString	*obj;
 
@@ -1051,7 +1051,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
   return AUTORELEASE(obj);
 }
 
-+ (id) stringWithContentsOfURL: (NSURL*)url
++ (instancetype) stringWithContentsOfURL: (NSURL*)url
                   usedEncoding: (NSStringEncoding*)enc
                          error: (NSError**)error
 {
@@ -1062,7 +1062,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
   return AUTORELEASE(obj);
 }
 
-+ (id) stringWithContentsOfURL: (NSURL*)url
++ (instancetype) stringWithContentsOfURL: (NSURL*)url
                       encoding: (NSStringEncoding)enc
                          error: (NSError**)error
 {
@@ -1078,7 +1078,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * be a constant format string, like '<code>@"float val = %f"</code>', remaining
  * arguments should be the variables to print the values of, comma-separated.
  */
-+ (id) stringWithFormat: (NSString*)format,...
++ (instancetype) stringWithFormat: (NSString*)format,...
 {
   va_list ap;
   id ret;
@@ -1123,7 +1123,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * subclassing NSString will need to be updated.
  * </p>
  */
-- (id) init
+- (instancetype) init
 {
   self = [super init];
   return self;
@@ -1137,7 +1137,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * If the data can not be interpreted using the encoding, the receiver
  * is released and nil is returned.
  */
-- (id) initWithBytes: (const void*)bytes
+- (instancetype) initWithBytes: (const void*)bytes
 	      length: (NSUInteger)length
 	    encoding: (NSStringEncoding)encoding
 {
@@ -1179,7 +1179,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * In the GNUstep implementation, your subclasses may override
  * this initialiser in order to have all other functionality.</p>
  */
-- (id) initWithBytesNoCopy: (void*)bytes
+- (instancetype) initWithBytesNoCopy: (void*)bytes
 		    length: (NSUInteger)length
 		  encoding: (NSStringEncoding)encoding
 	      freeWhenDone: (BOOL)flag
@@ -1194,7 +1194,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  *  this instance is deallocated.</p>
  * See -initWithBytesNoCopy:length:encoding:freeWhenDone: for more details.
  */
-- (id) initWithCharactersNoCopy: (unichar*)chars
+- (instancetype) initWithCharactersNoCopy: (unichar*)chars
 			 length: (NSUInteger)length
 		   freeWhenDone: (BOOL)flag
 {
@@ -1208,7 +1208,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * <p>Initialize with given unicode chars up to length, regardless of presence
  *  of null bytes.  Copies the string and frees copy when deallocated.</p>
  */
-- (id) initWithCharacters: (const unichar*)chars
+- (instancetype) initWithCharacters: (const unichar*)chars
 		   length: (NSUInteger)length
 {
   return [self initWithBytes: chars
@@ -1223,7 +1223,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  *  when this instance is deallocated.</p>
  * See -initWithBytesNoCopy:length:encoding:freeWhenDone: for more details.
  */
-- (id) initWithCStringNoCopy: (char*)byteString
+- (instancetype) initWithCStringNoCopy: (char*)byteString
 		      length: (NSUInteger)length
 		freeWhenDone: (BOOL)flag
 {
@@ -1238,7 +1238,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * Characters converted to unicode based on the specified C encoding.
  * Copies the string.</p>
  */
-- (id) initWithCString: (const char*)byteString
+- (instancetype) initWithCString: (const char*)byteString
 	      encoding: (NSStringEncoding)encoding
 {
   return [self initWithBytes: byteString
@@ -1251,7 +1251,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  *  presence of null bytes.  Characters converted to unicode based on the
  *  default C encoding.  Copies the string.</p>
  */
-- (id) initWithCString: (const char*)byteString  length: (NSUInteger)length
+- (instancetype) initWithCString: (const char*)byteString  length: (NSUInteger)length
 {
   return [self initWithBytes: byteString
 		      length: length
@@ -1263,7 +1263,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * null-terminated.  Characters are converted to unicode based on the default
  * C encoding.  Copies the string.</p>
  */
-- (id) initWithCString: (const char*)byteString
+- (instancetype) initWithCString: (const char*)byteString
 {
   return [self initWithBytes: byteString
 		      length: (byteString ? strlen(byteString) : 0)
@@ -1273,7 +1273,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Initialize to be a copy of the given string.
  */
-- (id) initWithString: (NSString*)string
+- (instancetype) initWithString: (NSString*)string
 {
   unsigned	length = [string length];
 
@@ -1298,7 +1298,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Initialize based on given null-terminated UTF-8 string bytes.
  */
-- (id) initWithUTF8String: (const char *)bytes
+- (instancetype) initWithUTF8String: (const char *)bytes
 {
   return [self initWithBytes: bytes
 		      length: (bytes ? strlen(bytes) : 0)
@@ -1308,7 +1308,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Invokes -initWithFormat:locale:arguments: with a nil locale.
  */
-- (id) initWithFormat: (NSString*)format,...
+- (instancetype) initWithFormat: (NSString*)format,...
 {
   va_list ap;
   va_start(ap, format);
@@ -1320,7 +1320,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Invokes -initWithFormat:locale:arguments:
  */
-- (id) initWithFormat: (NSString*)format
+- (instancetype) initWithFormat: (NSString*)format
                locale: (NSDictionary*)locale, ...
 {
   va_list ap;
@@ -1333,7 +1333,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
 /**
  * Invokes -initWithFormat:locale:arguments: with a nil locale.
  */
-- (id) initWithFormat: (NSString*)format
+- (instancetype) initWithFormat: (NSString*)format
             arguments: (va_list)argList
 {
   return [self initWithFormat: format locale: nil arguments: argList];
@@ -1343,7 +1343,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * Initialises the string using the specified format and locale
  * to format the following arguments.
  */
-- (id) initWithFormat: (NSString*)format
+- (instancetype) initWithFormat: (NSString*)format
                locale: (NSDictionary*)locale
             arguments: (va_list)argList
 {
@@ -1426,7 +1426,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * If the data can not be interpreted using the encoding, the receiver
  * is released and nil is returned.
  */
-- (id) initWithData: (NSData*)data
+- (instancetype) initWithData: (NSData*)data
 	   encoding: (NSStringEncoding)encoding
 {
   return [self initWithBytes: [data bytes]
@@ -1452,7 +1452,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * and converted to a string.
  * </p>
  */
-- (id) initWithContentsOfFile: (NSString*)path
+- (instancetype) initWithContentsOfFile: (NSString*)path
 {
   NSStringEncoding	enc = _DefaultStringEncoding;
   NSData		*d;
@@ -1518,7 +1518,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * and converted to a string.
  * </p>
  */
-- (id) initWithContentsOfFile: (NSString*)path
+- (instancetype) initWithContentsOfFile: (NSString*)path
                  usedEncoding: (NSStringEncoding*)enc
                         error: (NSError**)error
 {
@@ -1578,7 +1578,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
   return self;
 }
 
-- (id) initWithContentsOfFile: (NSString*)path
+- (instancetype) initWithContentsOfFile: (NSString*)path
                      encoding: (NSStringEncoding)enc
                         error: (NSError**)error
 {
@@ -1630,7 +1630,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
  * read and converted to a string.
  * </p>
  */
-- (id) initWithContentsOfURL: (NSURL*)url
+- (instancetype) initWithContentsOfURL: (NSURL*)url
 {
   NSStringEncoding	enc = _DefaultStringEncoding;
   NSData		*d = [NSDataClass dataWithContentsOfURL: url];
@@ -1674,7 +1674,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
   return self;
 }
 
-- (id) initWithContentsOfURL: (NSURL*)url
+- (instancetype) initWithContentsOfURL: (NSURL*)url
                 usedEncoding: (NSStringEncoding*)enc
                        error: (NSError**)error
 {
@@ -1726,7 +1726,7 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
   return self;
 }
 
-- (id) initWithContentsOfURL: (NSURL*)url
+- (instancetype) initWithContentsOfURL: (NSURL*)url
                     encoding: (NSStringEncoding)enc
                        error: (NSError**)error
 {
@@ -5862,7 +5862,7 @@ static NSFileManager *fm = nil;
     }
 }
 
-- (id) initWithCoder: (NSCoder*)aCoder
+- (instancetype) initWithCoder: (NSCoder*)aCoder
 {
   if ([aCoder allowsKeyedCoding])
     {
@@ -6104,7 +6104,7 @@ static NSFileManager *fm = nil;
  */
 @implementation NSMutableString
 
-+ (id) allocWithZone: (NSZone*)z
++ (instancetype) allocWithZone: (NSZone*)z
 {
   if (self == NSMutableStringClass)
     {
@@ -6121,7 +6121,7 @@ static NSFileManager *fm = nil;
 /**
  * Constructs an empty string.
  */
-+ (id) string
++ (instancetype) string
 {
   return AUTORELEASE([[GSMutableStringClass allocWithZone:
     NSDefaultMallocZone()] initWithCapacity: 0]);
@@ -6140,7 +6140,7 @@ static NSFileManager *fm = nil;
  * Create a string of unicode characters.
  */
 // Inefficient implementation.
-+ (id) stringWithCharacters: (const unichar*)characters
++ (instancetype) stringWithCharacters: (const unichar*)characters
 		     length: (NSUInteger)length
 {
   return AUTORELEASE([[GSMutableStringClass allocWithZone:
@@ -6152,7 +6152,7 @@ static NSFileManager *fm = nil;
  * containing direct unicode if it begins with the unicode byte order mark,
  * else converts to unicode using default C string encoding.
  */
-+ (id) stringWithContentsOfFile: (NSString *)path
++ (instancetype) stringWithContentsOfFile: (NSString *)path
 {
   return AUTORELEASE([[GSMutableStringClass allocWithZone:
     NSDefaultMallocZone()] initWithContentsOfFile: path]);
@@ -6163,7 +6163,7 @@ static NSFileManager *fm = nil;
  * null-terminated and encoded in the default C string encoding.  (Characters
  * will be converted to unicode representation internally.)
  */
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 {
   return AUTORELEASE([[GSMutableStringClass allocWithZone:
     NSDefaultMallocZone()] initWithCString: byteString]);
@@ -6174,7 +6174,7 @@ static NSFileManager *fm = nil;
  * null bytes and should be encoded in the default C string encoding.
  * (Characters will be converted to unicode representation internally.)
  */
-+ (id) stringWithCString: (const char*)byteString
++ (instancetype) stringWithCString: (const char*)byteString
 		  length: (NSUInteger)length
 {
   return AUTORELEASE([[GSMutableStringClass allocWithZone:
@@ -6186,7 +6186,7 @@ static NSFileManager *fm = nil;
  * be a constant format string, like '<code>@"float val = %f"</code>', remaining
  * arguments should be the variables to print the values of, comma-separated.
  */
-+ (id) stringWithFormat: (NSString*)format, ...
++ (instancetype) stringWithFormat: (NSString*)format, ...
 {
   va_list ap;
   va_start(ap, format);
@@ -6201,13 +6201,13 @@ static NSFileManager *fm = nil;
  * and needs to be re-implemented in subclasses in order to have all
  * other initialisers work.
  */
-- (id) initWithCapacity: (NSUInteger)capacity
+- (instancetype) initWithCapacity: (NSUInteger)capacity
 {
   self = [self init];
   return self;
 }
 
-- (id) initWithCharactersNoCopy: (unichar*)chars
+- (instancetype) initWithCharactersNoCopy: (unichar*)chars
 			 length: (NSUInteger)length
 		   freeWhenDone: (BOOL)flag
 {
@@ -6225,7 +6225,7 @@ static NSFileManager *fm = nil;
   return self;
 }
 
-- (id) initWithCStringNoCopy: (char*)chars
+- (instancetype) initWithCStringNoCopy: (char*)chars
 		      length: (NSUInteger)length
 		freeWhenDone: (BOOL)flag
 {
