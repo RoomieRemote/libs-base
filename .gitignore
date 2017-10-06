@@ -25,3 +25,5 @@ Tests/base/coding/ulong-8.type
 # Editor byproducts
 *.orig
 *.swp
+*.xcworkspacedata
+xcuserdata
