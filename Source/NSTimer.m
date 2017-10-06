@@ -35,6 +35,30 @@
 #import "Foundation/NSRunLoop.h"
 #import "Foundation/NSInvocation.h"
 
+@interface TimerBlockWrapper : NSObject
+- (instancetype) initWithBlock:(void (^)(NSTimer *timer))block;
+- (void)invokeWithTimer:(NSTimer *)timer;
+@end
+
+@implementation TimerBlockWrapper
+{
+	void (^_block)(NSTimer *timer);
+}
+
+- (instancetype) initWithBlock:(void (^)(NSTimer *timer))block
+{
+	if (!(self = [super init])) { return nil; }
+	_block = block;
+	return self;
+}
+
+- (void)invokeWithTimer:(NSTimer *)timer
+{
+	_block(timer);
+}
+
+@end
+
 @class	NSGDate;
 @interface NSGDate : NSObject	// Help the compiler
 @end
@@ -227,6 +251,18 @@ static Class	NSDate_class;
   [[NSRunLoop currentRunLoop] addTimer: t forMode: NSDefaultRunLoopMode];
   RELEASE(t);
   return t;
+}
+
++ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer *timer))block
+{
+	TimerBlockWrapper *wrapper = [[TimerBlockWrapper alloc] initWithBlock:block];
+	return [self timerWithTimeInterval:interval target:wrapper selector:@selector(invokeWithTimer:) userInfo:nil repeats:repeats];
+}
+
++ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer *timer))block
+{
+	TimerBlockWrapper *wrapper = [[TimerBlockWrapper alloc] initWithBlock:block];
+	return [self scheduledTimerWithTimeInterval:interval target:wrapper selector:@selector(invokeWithTimer:) userInfo:nil repeats:repeats];
 }
 
 - (void) dealloc
