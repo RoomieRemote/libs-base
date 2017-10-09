@@ -725,6 +725,9 @@ static inline BOOL timerInvalidated(NSTimer *t)
  * <code>NSConnectionReplyMode</code>, and certain modes used by the AppKit.</p>
  */
 @implementation NSRunLoop
+{
+	volatile BOOL _stopped;
+}
 
 + (void) initialize
 {
@@ -1326,17 +1329,24 @@ updateTimer(NSTimer *t, NSDate *d, NSTimeInterval now)
  */
 - (void) runUntilDate: (NSDate*)date
 {
+  _stopped = NO;
+	
   BOOL		mayDoMore = YES;
 
   /* Positive values are in the future. */
   while (YES == mayDoMore)
     {
       mayDoMore = [self runMode: NSDefaultRunLoopMode beforeDate: date];
-      if (nil == date || [date timeIntervalSinceNow] <= 0.0)
+      if (nil == date || [date timeIntervalSinceNow] <= 0.0 || _stopped)
         {
           mayDoMore = NO;
         }
     }
+}
+
+- (void) stop
+{
+	_stopped = YES;
 }
 
 @end

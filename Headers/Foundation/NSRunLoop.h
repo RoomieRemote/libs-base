@@ -94,6 +94,8 @@ GS_EXPORT NSString * const NSDefaultRunLoopMode;
 
 - (void) runUntilDate: (NSDate*)date;
 
+- (void) stop;
+
 @end
 
 @interface NSRunLoop(OPENSTEP)
