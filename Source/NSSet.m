@@ -1220,3 +1220,158 @@ static Class NSMutableSet_concrete_class;
 }
 
 @end
+
+
+@implementation NSOrderedSet
+{
+	@protected
+	NSMutableArray *_items;
+}
+
+- (NSUInteger)count
+{
+	return _items.count;
+}
+
+- (id)objectAtIndex:(NSUInteger)idx
+{
+	return [_items objectAtIndex:idx];
+}
+
+- (NSUInteger)indexOfObject:(id)object
+{
+	return [_items indexOfObject:object];
+}
+
+- (instancetype)init
+{
+	if (!(self = [super init])) { return nil; }
+	_items = [NSMutableArray array];
+	return self;
+}
+
+- (instancetype)initWithCapacity:(NSUInteger)numItems
+{
+	if (!(self = [super init])) { return nil; }
+	_items = [NSMutableArray arrayWithCapacity:numItems];
+	return self;
+}
+
+- (instancetype)initWithObjects:(const id _Nonnull [_Nullable])objects count:(NSUInteger)cnt
+{
+	if (!(self = [super init])) { return nil; }
+	_items = [NSMutableArray arrayWithObjects:objects count:cnt];
+	return self;
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+	if (!(self = [super init])) { return nil; }
+	assert(!"TODO");
+	//	_items = [NSMutableArray arrayWithCoder:aDecoder];
+	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+	assert(!"TODO");
+}
+
+
+- (id) firstObject
+{
+	return _items.firstObject;
+}
+
+- (BOOL)containsObject:(id)object
+{
+	return [_items containsObject:object];
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+	return [self mutableCopyWithZone:zone];
+}
+
+- (instancetype)mutableCopyWithZone:(NSZone *)zone
+{
+	NSOrderedSet *copy = [NSOrderedSet alloc];
+	copy->_items = [_items copyWithZone:zone];
+	return copy;
+}
+
++ (BOOL)supportsSecureCoding
+{
+	return NO; // ??
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len
+{
+	return [_items countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
+@end
+
+@implementation NSMutableOrderedSet
+
+- (void)insertObject:(id)object atIndex:(NSUInteger)idx
+{
+	if ([self containsObject:object]) { return; }
+	[_items insertObject:object atIndex:idx];
+}
+
+- (void)removeObjectAtIndex:(NSUInteger)idx
+{
+	[_items removeObjectAtIndex:idx];
+}
+
+- (void)replaceObjectAtIndex:(NSUInteger)idx withObject:(id)object
+{
+	if ([self containsObject:object])
+	{
+		if ([self indexOfObject:object] == idx) { return; }
+		[self removeObjectAtIndex:idx];
+	}
+	else
+	{
+		[_items replaceObjectAtIndex:idx withObject:object];
+	}
+	
+}
+
+- (instancetype)init
+{
+	return [super init];
+}
+
+- (instancetype)initWithCapacity:(NSUInteger)numItems
+{
+	return [super initWithCapacity:numItems];
+}
+
+- (instancetype)initWithObjects:(const id _Nonnull [_Nullable])objects count:(NSUInteger)cnt
+{
+	return [super initWithObjects:objects count:cnt];
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+	return [super initWithCoder:aDecoder];
+}
+
++ (instancetype)orderedSet
+{
+	return [[self alloc] init];
+}
+
+- (void)addObject:(id)object
+{
+	if ([self containsObject:object]) { return; }
+	[_items addObject:object];
+}
+
+- (void)removeObject:(id)object
+{
+	[_items removeObject:object];
+}
+
+@end
