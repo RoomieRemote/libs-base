@@ -163,27 +163,27 @@ DEFINE_BLOCK_TYPE(GSSetFilterBlock, BOOL, GS_GENERIC_TYPE(ElementT), BOOL*);
 - (NSUInteger)indexOfObject:(GS_GENERIC_TYPE(ElementT))object;
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithObjects:(const GS_GENERIC_TYPE(ElementT) _Nonnull [_Nullable])objects count:(NSUInteger)cnt NS_DESIGNATED_INITIALIZER;
-- (nullable instancetype)initWithCoder:(NSCoder* _Nullable)aDecoder NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithObjects:(const GS_GENERIC_TYPE(ElementT)[])objects count:(NSUInteger)cnt NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder*)aDecoder NS_DESIGNATED_INITIALIZER;
 
-@property (nullable, nonatomic, readonly) GS_GENERIC_TYPE(ElementT) firstObject;
-- (BOOL)containsObject:(GS_GENERIC_TYPE(ElementT) _Nonnull)object;
+@property (nonatomic, readonly) GS_GENERIC_TYPE(ElementT) firstObject;
+- (BOOL)containsObject:(GS_GENERIC_TYPE(ElementT))object;
 
 @end
 	
 @interface GS_GENERIC_CLASS(NSMutableOrderedSet, ElementT) : GS_GENERIC_CLASS(NSOrderedSet, ElementT)
 
-- (void)insertObject:(GS_GENERIC_TYPE(ElementT) _Nonnull)object atIndex:(NSUInteger)idx;
+- (void)insertObject:(GS_GENERIC_TYPE(ElementT))object atIndex:(NSUInteger)idx;
 - (void)removeObjectAtIndex:(NSUInteger)idx;
-- (void)replaceObjectAtIndex:(NSUInteger)idx withObject:(GS_GENERIC_TYPE(ElementT) _Nonnull)object;
-- (nullable instancetype)initWithCoder:(NSCoder * _Nullable)aDecoder NS_DESIGNATED_INITIALIZER;
-- (instancetype _Nonnull)init NS_DESIGNATED_INITIALIZER;
-- (instancetype _Nonnull)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER;
-- (instancetype _Nonnull)initWithObjects:(const GS_GENERIC_TYPE(ElementT) _Nonnull [_Nullable])objects count:(NSUInteger)cnt NS_DESIGNATED_INITIALIZER;
+- (void)replaceObjectAtIndex:(NSUInteger)idx withObject:(GS_GENERIC_TYPE(ElementT))object;
+- (instancetype)initWithCoder:(NSCoder*)aDecoder NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithObjects:(const GS_GENERIC_TYPE(ElementT)[])objects count:(NSUInteger)cnt NS_DESIGNATED_INITIALIZER;
 
-+ (instancetype _Nonnull)orderedSet;
-- (void)addObject:(GS_GENERIC_TYPE(ElementT) _Nonnull)object;
-- (void)removeObject:(GS_GENERIC_TYPE(ElementT) _Nonnull)object;
++ (instancetype)orderedSet;
+- (void)addObject:(GS_GENERIC_TYPE(ElementT))object;
+- (void)removeObject:(GS_GENERIC_TYPE(ElementT))object;
 
 @end
 
