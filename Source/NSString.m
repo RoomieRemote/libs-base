@@ -67,6 +67,7 @@
 #import "Foundation/NSLocale.h"
 #import "Foundation/NSLock.h"
 #import "Foundation/NSNotification.h"
+#import "Foundation/NSScanner.h"
 #import "Foundation/NSUserDefaults.h"
 #import "Foundation/FoundationErrors.h"
 // For private method _decodePropertyListForKey:
@@ -493,6 +494,95 @@ static unsigned rootOf(NSString *s, unsigned l)
     }
   return root;
 }
+
+
+@interface PercentDecoder : NSObject
+- (instancetype)init;
+- (void)appendCharacter:(unichar)c;
+- (void)terminate;
+- (NSString*)decoded;
+@end
+
+@implementation PercentDecoder
+{
+	NSMutableData *_utf8data;
+	NSMutableString *_digits;
+	NSMutableString *_decoded;
+}
+
+- (instancetype)init
+{
+	if (!(self = [super init])) { return nil; }
+	_decoded = [NSMutableString string];
+	return self;
+}
+
+- (void)flush
+{
+	if (_utf8data)
+	{
+		[_decoded appendString:[[NSString alloc] initWithBytes:_utf8data.bytes length:_utf8data.length encoding:NSUTF8StringEncoding]];
+		_utf8data = nil;
+	}
+	if (_digits)
+	{
+		[_decoded appendString:@"%"];
+		[_decoded appendString:_digits];
+		_digits = nil;
+	}
+}
+
+- (void)appendCharacter:(unichar)c
+{
+	if (c == '%')
+	{
+		if (_digits) { [self flush]; }
+		assert(!_digits);
+		_digits = [NSMutableString stringWithCapacity:2];
+	}
+	else
+	{
+		if (_digits)
+		{
+			[_digits appendFormat:@"%C", c];
+			if (_digits.length == 2)
+			{
+				unsigned int value = 0;
+				NSScanner *scanner = [NSScanner scannerWithString:_digits];
+				if (![scanner scanHexInt:&value])
+				{
+					[self flush];
+				}
+				else if (scanner.scanLocation != 2)
+				{
+					[self flush];
+				}
+				else
+				{
+					uint8_t u = value;
+					[_utf8data appendBytes:&u length:1];
+				}
+			}
+		}
+		else
+		{
+			[self flush];
+			[_decoded appendFormat:@"%C", c];
+		}
+	}
+}
+
+- (void)terminate
+{
+	[self flush];
+}
+
+- (NSString*)decoded
+{
+	return _decoded;
+}
+
+@end
 
 
 @implementation NSString
@@ -1896,6 +1986,40 @@ GSICUCollatorOpen(NSStringCompareOptions mask, NSLocale *locale)
     }
   return s;
 }
+
+- (NSString *)stringByAddingPercentEncodingWithAllowedCharacters:(NSCharacterSet *)allowedCharacters
+{
+	NSMutableString *s = [NSMutableString stringWithCapacity:self.length];
+	for (int i = 0; i < self.length; i++)
+	{
+		unichar c = [self characterAtIndex:i];
+		if (![allowedCharacters characterIsMember:c] || c == '%')
+		{
+			NSData *d = [[NSString stringWithCharacters:&c length:1] dataUsingEncoding:NSUTF8StringEncoding];
+			for (int j = 0; j < d.length; j++)
+			{
+				[s appendFormat:@"%%%X02", ((uint8_t const *)(d.bytes))[j]];
+			}
+		}
+		else
+		{
+			[s appendFormat:@"%C", c];
+		}
+	}
+	return s;
+}
+
+- (NSString*) stringByRemovingPercentEncoding
+{
+	PercentDecoder *decoder = [[PercentDecoder alloc] init];
+	for (int i = 0; i < self.length; i++)
+	{
+		[decoder appendCharacter:[self characterAtIndex:i]];
+	}
+	[decoder terminate];
+	return decoder.decoded;
+}
+
 
 /**
  * Constructs a new string consisting of this instance followed by the string
