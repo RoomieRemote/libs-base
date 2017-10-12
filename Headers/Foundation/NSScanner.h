@@ -94,6 +94,7 @@ extern "C" {
 - (BOOL) scanInt: (int*)value;
 - (BOOL) scanHexInt: (unsigned int*)value;
 - (BOOL) scanLongLong: (long long*)value;
+- (BOOL) scanUnsignedLongLong: (unsigned long long*)value;
 - (BOOL) scanFloat: (float*)value;
 - (BOOL) scanDouble: (double*)value;
 - (BOOL) scanString: (NSString*)string intoString: (NSString**)value;

@@ -708,6 +708,77 @@ typedef GSString	*ivars;
   return YES;
 }
 
+- (BOOL) scanUnsignedLongLong: (unsigned long long *)value
+{
+	unsigned long long		num = 0;
+	const unsigned long long	limit = ULLONG_MAX / 10;
+	BOOL				negative = NO;
+	BOOL				overflow = NO;
+	BOOL				got_digits = NO;
+	unsigned int			saveScanLocation = _scanLocation;
+	
+	/* Skip whitespace */
+	if (!skipToNextField())
+	{
+		_scanLocation = saveScanLocation;
+		return NO;
+	}
+	
+	/* Check for sign */
+	if (_scanLocation < myLength())
+	{
+		switch (myCharacter(_scanLocation))
+		{
+			case '+':
+				_scanLocation++;
+				break;
+			case '-':
+				negative = YES;
+				_scanLocation++;
+				break;
+		}
+	}
+	
+	/* Process digits */
+	while (_scanLocation < myLength())
+	{
+		unichar digit = myCharacter(_scanLocation);
+		
+		if ((digit < '0') || (digit > '9'))
+			break;
+		if (!overflow) {
+			if (num >= limit)
+				overflow = YES;
+			else
+				num = num * 10 + (digit - '0');
+		}
+		_scanLocation++;
+		got_digits = YES;
+	}
+	
+	/* Save result */
+	if (!got_digits)
+	{
+		_scanLocation = saveScanLocation;
+		return NO;
+	}
+	if (value)
+	{
+		if (negative)
+		{
+			*value = 0;
+		}
+		else
+		{
+			if (overflow)
+				*value = LLONG_MAX;
+			else
+				*value = num;
+		}
+	}
+	return YES;
+}
+
 /**
  * After initial skipping (if any), this method scans a hexadecimal
  * long long value (optionally prefixed by "0x" or "0X"),
