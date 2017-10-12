@@ -1043,6 +1043,52 @@ failure:
   return [NSData dataWithBytesNoCopy: buffer length: aRange.length];
 }
 
+- (NSRange)rangeOfData:(NSData *)dataToFind options:(NSDataSearchOptions)mask range:(NSRange)searchRange
+{
+	if (searchRange.location + searchRange.length > self.length)
+	{
+		@throw [NSException exceptionWithName:NSRangeException reason:@"" userInfo:nil];
+	}
+	
+	NSRange result = { NSNotFound, 0 };
+	if (!dataToFind.length || self.length < dataToFind.length || searchRange.length < dataToFind.length) { return result; }
+	if (mask & NSDataSearchAnchored)
+	{
+		if (mask & NSDataSearchBackwards)
+		{
+			searchRange.location += searchRange.length - dataToFind.length;
+		}
+		searchRange.length = dataToFind.length;
+	}
+	
+	if (mask & NSDataSearchBackwards)
+	{
+		for (NSUInteger begin = searchRange.location + searchRange.length - dataToFind.length; begin >= searchRange.location; --begin)
+		{
+			if (memcmp(self.bytes + begin, dataToFind.bytes, dataToFind.length) == 0)
+			{
+				result.location = begin;
+				result.length = dataToFind.length;
+				return result;
+			}
+		}
+	}
+	else
+	{
+		for (NSUInteger begin = searchRange.location; begin <= searchRange.location + searchRange.length - dataToFind.length; ++begin)
+		{
+			if (memcmp(self.bytes + begin, dataToFind.bytes, dataToFind.length) == 0)
+			{
+				result.location = begin;
+				result.length = dataToFind.length;
+				return result;
+			}
+		}
+	}
+	
+	return result;
+}
+
 - (NSData *) base64EncodedDataWithOptions: (NSDataBase64EncodingOptions)options
 {
   void          *srcBytes = (void*)[self bytes];
