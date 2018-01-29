@@ -84,7 +84,7 @@ extern "C" {
  * This method breaks with convention and retains the delegate object,
  * releasing it when the connection finished loading, fails, or is cancelled.
  */
-- (id) initWithRequest: (NSURLRequest *)request delegate: (id)delegate;
+- (instancetype) initWithRequest: (NSURLRequest *)request delegate: (id)delegate;
 
 @end
 

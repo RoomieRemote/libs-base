@@ -102,7 +102,7 @@ extern "C" {
 /**
  * Initialises a new challenge by copying information from an old one.
  */
-- (id) initWithAuthenticationChallenge:
+- (instancetype) initWithAuthenticationChallenge:
   (NSURLAuthenticationChallenge *)challenge
 				sender:
   (id<NSURLAuthenticationChallengeSender>)sender;
@@ -115,7 +115,7 @@ extern "C" {
  * The error provides information about the authentication failure and
  * the sender is the object to receive callbacks.
  */
-- (id) initWithProtectionSpace: (NSURLProtectionSpace *)space
+- (instancetype) initWithProtectionSpace: (NSURLProtectionSpace *)space
 	    proposedCredential: (NSURLCredential *)credential
 	  previousFailureCount: (NSInteger)previousFailureCount
 	       failureResponse: (NSURLResponse *)response

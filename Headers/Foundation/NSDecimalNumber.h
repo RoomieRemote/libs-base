@@ -146,14 +146,14 @@ extern "C" {
  *  value (<code>NSRoundPlain</code>).  Exceptions raised on overflow,
  *  underflow, and divide by zero.
  */
-+ (id)defaultDecimalNumberHandler;
++ (instancetype)defaultDecimalNumberHandler;
 
 /**
  * Constructor setting all behavior.  (For more precise control over error
  * handling, create your own class implementing the [(NSDecimalNumberBehaviors)]
  * protocol.)
  */
-+ (id)decimalNumberHandlerWithRoundingMode:(NSRoundingMode)roundingMode 
++ (instancetype)decimalNumberHandlerWithRoundingMode:(NSRoundingMode)roundingMode 
 				     scale:(short)scale
 			  raiseOnExactness:(BOOL)raiseOnExactness 
 			   raiseOnOverflow:(BOOL)raiseOnOverflow 
@@ -165,7 +165,7 @@ extern "C" {
  * handling, create your own class implementing the [(NSDecimalNumberBehaviors)]
  * protocol.)
  */
-- (id)initWithRoundingMode:(NSRoundingMode)roundingMode 
+- (instancetype)initWithRoundingMode:(NSRoundingMode)roundingMode 
 		     scale:(short)scale 
 	  raiseOnExactness:(BOOL)raiseOnExactness
 	   raiseOnOverflow:(BOOL)raiseOnOverflow 
@@ -269,13 +269,13 @@ extern "C" {
  *  Initialize with given value.  Note an NSDecimal may be created using the
  *  function NSDecimalFromString().
  */
-- (id)initWithDecimal:(NSDecimal)decimal;
+- (instancetype)initWithDecimal:(NSDecimal)decimal;
 
 /**
  *  Initialize by component.  Note that the precision of this initializer is
  *  limited.
  */
-- (id)initWithMantissa:(unsigned long long)mantissa 
+- (instancetype)initWithMantissa:(unsigned long long)mantissa 
 	      exponent:(short)exponent 
 	    isNegative:(BOOL)flag;
 
@@ -285,7 +285,7 @@ extern "C" {
  *  constrained by the current <em><code>scale</code></em>.  Number format
  *  is parsed according to current default locale.
  */
-- (id)initWithString:(NSString *)numberValue;
+- (instancetype)initWithString:(NSString *)numberValue;
 
 /**
  *  Initialize from string.  Arbitrary precision is preserved, though calling
@@ -293,7 +293,7 @@ extern "C" {
  *  constrained by the current <em><code>scale</code></em>.  Number format
  *  is parsed according to given locale.
  */
-- (id)initWithString:(NSString *)numberValue 
+- (instancetype)initWithString:(NSString *)numberValue 
 	      locale:(NSDictionary *)locale;
 
 /**

@@ -64,60 +64,60 @@ typedef NSUInteger NSMapTableOptions;
 /** Return a map table initialised using the specified options for
  * keys and values.
  */
-+ (id) mapTableWithKeyOptions: (NSPointerFunctionsOptions)keyOptions
++ (instancetype) mapTableWithKeyOptions: (NSPointerFunctionsOptions)keyOptions
 		 valueOptions: (NSPointerFunctionsOptions)valueOptions;
 
 /** Convenience method for creating a map table to store object values
  * using object keys.
  */
-+ (id) mapTableWithStrongToStrongObjects;
++ (instancetype) mapTableWithStrongToStrongObjects;
 
 /** Convenience method for creating a map table to store non-retained
  * object values with retained object keys.
  */
-+ (id) mapTableWithStrongToWeakObjects;
++ (instancetype) mapTableWithStrongToWeakObjects;
 
 /** Convenience method for creating a map table to store retained
  * object values with non-retained object keys.
  */
-+ (id) mapTableWithWeakToStrongObjects;
++ (instancetype) mapTableWithWeakToStrongObjects;
 
 /** Convenience method for creating a map table to store non-retained
  * object values with non-retained object keys.
  */
-+ (id) mapTableWithWeakToWeakObjects;
++ (instancetype) mapTableWithWeakToWeakObjects;
 
 /** Convenience method for creating a map table to store object values
  * using object keys.  The collection will retain both the key and the value.
  */
-+ (id) strongToStrongObjectsMapTable;
++ (instancetype) strongToStrongObjectsMapTable;
 /** Convenience method for creating a map table to store object values
  * using object keys.  The collection will retain the key, the value will be a
  * zeroing weak reference.
  */
-+ (id) strongToWeakObjectsMapTable;
++ (instancetype) strongToWeakObjectsMapTable;
 /** Convenience method for creating a map table to store object values
  * using object keys.  The collection will retain the value, the key will be a
  * zeroing weak reference.
  */
-+ (id) weakToStrongObjectsMapTable;
++ (instancetype) weakToStrongObjectsMapTable;
 /** Convenience method for creating a map table to store object values
  * using object keys.  The collection will use zeroing weak references for both
  * the key and the value.
  */
-+ (id) weakToWeakObjectsMapTable;
++ (instancetype) weakToWeakObjectsMapTable;
 
 
 /** Initialiser using option bitmasks to describe the keys and values.
  */
-- (id) initWithKeyOptions: (NSPointerFunctionsOptions)keyOptions
+- (instancetype) initWithKeyOptions: (NSPointerFunctionsOptions)keyOptions
 	     valueOptions: (NSPointerFunctionsOptions)valueOptions
 	         capacity: (NSUInteger)initialCapacity;
 
 /** Initialiser using full pointer function information to describe
  * the keys and values.
  */
-- (id) initWithKeyPointerFunctions: (NSPointerFunctions*)keyFunctions
+- (instancetype) initWithKeyPointerFunctions: (NSPointerFunctions*)keyFunctions
 	     valuePointerFunctions: (NSPointerFunctions*)valueFunctions
 			  capacity: (NSUInteger)initialCapacity;
 

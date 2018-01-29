@@ -203,7 +203,7 @@ typedef NSUInteger NSURLHandleStatus;
 - (void) endLoadInBackground;
 - (NSString*) failureReason;
 - (void) flushCachedData;
-- (id) initWithURL: (NSURL*)url
+- (instancetype) initWithURL: (NSURL*)url
 	    cached: (BOOL)cached;
 - (void) loadInBackground;
 - (NSData*) loadInForeground;

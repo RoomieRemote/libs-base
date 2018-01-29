@@ -86,7 +86,7 @@ extern "C" {
  * 
  * </example>
  */
-+ (id) newLockAt: (id *)location;
++ (instancetype) newLockAt: (id *)location;
 @end
 
 @interface NSRecursiveLock (GNUstepBase)
@@ -113,7 +113,7 @@ extern "C" {
  * 
  * </example>
  */
-+ (id) newLockAt: (id *)location;
++ (instancetype) newLockAt: (id *)location;
 @end
 
 #endif	/* OS_API_VERSION */

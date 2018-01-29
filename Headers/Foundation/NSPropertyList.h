@@ -256,7 +256,7 @@ typedef NSUInteger NSPropertyListFormat;
  * in which the format of the serialized property list will be returned.<br />
  * Either nil or an error message will be returned in anErrorString.
  */
-+ (id) propertyListFromData: (NSData*)data
++ (instancetype) propertyListFromData: (NSData*)data
 	   mutabilityOption: (NSPropertyListMutabilityOptions)anOption
 		     format: (NSPropertyListFormat*)aFormat
 	   errorDescription: (NSString**)anErrorString;
@@ -266,11 +266,11 @@ typedef NSUInteger NSPropertyListFormat;
                            format: (NSPropertyListFormat)aFormat
                           options: (NSPropertyListWriteOptions)anOption
                             error: (out NSError**)error;
-+ (id) propertyListWithData: (NSData*)data
++ (instancetype) propertyListWithData: (NSData*)data
                     options: (NSPropertyListReadOptions)anOption
                      format: (NSPropertyListFormat*)aFormat
                       error: (out NSError**)error;
-+ (id) propertyListWithStream: (NSInputStream*)stream
++ (instancetype) propertyListWithStream: (NSInputStream*)stream
                       options: (NSPropertyListReadOptions)anOption
                        format: (NSPropertyListFormat*)aFormat
                         error: (out NSError**)error;

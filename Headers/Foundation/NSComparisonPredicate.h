@@ -105,7 +105,7 @@ typedef enum _NSPredicateOperatorType
 - (NSPredicate *) initWithLeftExpression: (NSExpression *)left
 			 rightExpression: (NSExpression *)right
 			  customSelector: (SEL)sel;
-- (id) initWithLeftExpression: (NSExpression *)left
+- (instancetype) initWithLeftExpression: (NSExpression *)left
 	      rightExpression: (NSExpression *)right
 		     modifier: (NSComparisonPredicateModifier)modifier
 			 type: (NSPredicateOperatorType)type

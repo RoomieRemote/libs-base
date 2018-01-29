@@ -62,7 +62,7 @@ extern "C" {
  * Initialises the receiver with the URL, MIMEType, expected length and
  * text encoding name provided.
  */
-- (id) initWithURL: (NSURL *)URL
+- (instancetype) initWithURL: (NSURL *)URL
   MIMEType: (NSString *)MIMEType
   expectedContentLength: (NSInteger)length
   textEncodingName: (NSString *)name;
@@ -72,7 +72,7 @@ extern "C" {
  * Initialises the receiver with the URL, statusCode, HTTPVersion, and
  * headerFields provided.
  */
-- (id) initWithURL: (NSURL*)URL
+- (instancetype) initWithURL: (NSURL*)URL
 	statusCode: (NSInteger)statusCode
        HTTPVersion: (NSString*)HTTPVersion
       headerFields: (NSDictionary*)headerFields;

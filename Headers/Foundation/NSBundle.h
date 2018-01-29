@@ -234,10 +234,10 @@ GS_EXPORT NSString* const NSLoadedClasses;
  * identifier already exists, the existing bundle is returned in place
  * of the receiver (and the receiver is deallocated).
  */
-- (id) initWithPath: (NSString*)path;
+- (instancetype) initWithPath: (NSString*)path;
 
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_6,GS_API_LATEST) 
-- (id) initWithURL: (NSURL*)url;
+- (instancetype) initWithURL: (NSURL*)url;
 #endif
 
 /** Return the path to the bundle - an absolute path.  */

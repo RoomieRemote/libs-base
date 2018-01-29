@@ -150,7 +150,7 @@ GS_EXPORT NSString* const NSCocoaErrorDomain;
  * Creates and returns an autoreleased NSError instance by calling
  * -initWithDomain:code:userInfo:
  */
-+ (id) errorWithDomain: (NSString*)aDomain
++ (instancetype) errorWithDomain: (NSString*)aDomain
 		  code: (NSInteger)aCode
 	      userInfo: (NSDictionary*)aDictionary;
 
@@ -169,7 +169,7 @@ GS_EXPORT NSString* const NSCocoaErrorDomain;
  * Initialises the receiver using the supplied domain, code, and info.<br />
  * The domain must be non-nil.
  */
-- (id) initWithDomain: (NSString*)aDomain
+- (instancetype) initWithDomain: (NSString*)aDomain
 		 code: (NSInteger)aCode
 	     userInfo: (NSDictionary*)aDictionary;
 

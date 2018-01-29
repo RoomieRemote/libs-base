@@ -64,9 +64,9 @@ extern "C" {
 /*
  * Creating an NSScanner
  */
-+ (id) localizedScannerWithString: (NSString*)aString;
-+ (id) scannerWithString: (NSString*)aString;
-- (id) initWithString: (NSString*)aString;
++ (instancetype) localizedScannerWithString: (NSString*)aString;
++ (instancetype) scannerWithString: (NSString*)aString;
+- (instancetype) initWithString: (NSString*)aString;
 
 /*
  * Getting an NSScanner's string

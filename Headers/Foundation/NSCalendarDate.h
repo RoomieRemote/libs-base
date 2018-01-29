@@ -42,13 +42,13 @@ extern "C" {
 }
 
 // Getting an NSCalendar Date
-+ (id) calendarDate;
-+ (id) dateWithString: (NSString*)description
++ (instancetype) calendarDate;
++ (instancetype) dateWithString: (NSString*)description
        calendarFormat: (NSString*)format;
-+ (id) dateWithString: (NSString*)description
++ (instancetype) dateWithString: (NSString*)description
        calendarFormat: (NSString*)format
 	       locale: (NSDictionary*)dictionary;
-+ (id) dateWithYear: (NSInteger)year
++ (instancetype) dateWithYear: (NSInteger)year
 	      month: (NSUInteger)month
 	        day: (NSUInteger)day
 	       hour: (NSUInteger)hour
@@ -57,13 +57,13 @@ extern "C" {
 	   timeZone: (NSTimeZone*)aTimeZone;
 
 // Initializing an NSCalendar Date
-- (id) initWithString: (NSString*)description;
-- (id) initWithString: (NSString*)description
+- (instancetype) initWithString: (NSString*)description;
+- (instancetype) initWithString: (NSString*)description
        calendarFormat: (NSString*)format;
-- (id) initWithString: (NSString*)description
+- (instancetype) initWithString: (NSString*)description
        calendarFormat: (NSString*)fmt
 	       locale: (NSDictionary*)locale;
-- (id) initWithYear: (NSInteger)year
+- (instancetype) initWithYear: (NSInteger)year
 	      month: (NSUInteger)month
 	        day: (NSUInteger)day
 	       hour: (NSUInteger)hour

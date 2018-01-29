@@ -109,12 +109,12 @@ extern "C" {
  * Basic initializer sets up object capable of send and receive.
  * See +port for more details.
  */
-- (id) init;
+- (instancetype) init;
 
 /**
  * NSMachPort compatibility method.
  */
-- (id) initWithMachPort: (NSInteger)machPort;
+- (instancetype) initWithMachPort: (NSInteger)machPort;
 
 /**
  * NSMachPort compatibility.

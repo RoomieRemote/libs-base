@@ -96,7 +96,7 @@ GS_EXPORT NSString* const GSNetworkNotificationCenterType;
   @private id _internal GS_UNUSED_IVAR;
 #endif
 }
-+ (id) defaultCenter;
++ (instancetype) defaultCenter;
 + (NSDistributedNotificationCenter*) notificationCenterForType: (NSString*)type;
 
 - (void) addObserver: (id)anObserver

@@ -55,10 +55,10 @@ extern "C" {
 
 // Creating a checker
 
-+ (id) protocolCheckerWithTarget: (NSObject*)anObject
++ (instancetype) protocolCheckerWithTarget: (NSObject*)anObject
 			protocol: (Protocol*)aProtocol;
 
-- (id) initWithTarget: (NSObject*)anObject
+- (instancetype) initWithTarget: (NSObject*)anObject
 	     protocol: (Protocol*)aProtocol;
 
 // Reimplemented NSObject methods

@@ -89,7 +89,7 @@ extern NSString * const NSURLAuthenticationMethodServerTrust;
  * protection space.  For some protocols the realm identifies a space
  * within the host, for others it may be nil.
  */
-- (id) initWithHost: (NSString *)host
+- (instancetype) initWithHost: (NSString *)host
 	       port: (NSInteger)port
 	   protocol: (NSString *)protocol
 	      realm: (NSString *)realm
@@ -100,7 +100,7 @@ authenticationMethod: (NSString *)authenticationMethod;
  * except that it uses a proxy host and proxy type rather than an actual
  * host and a protocol.
  */
-- (id) initWithProxyHost: (NSString *)host
+- (instancetype) initWithProxyHost: (NSString *)host
 		    port: (NSInteger)port
 		    type: (NSString *)type
 		   realm: (NSString *)realm

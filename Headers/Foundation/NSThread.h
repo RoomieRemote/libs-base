@@ -160,14 +160,14 @@ extern "C" {
 
 /** <init/>
  */
-- (id) init;
+- (instancetype) init;
 
 /** Initialises the receiver to send the message aSelector to the object aTarget
  * with the argument anArgument (which may be nil).<br />
  * The arguments aTarget and aSelector are retained while the thread is
  * running.
  */
-- (id) initWithTarget: (id)aTarget
+- (instancetype) initWithTarget: (id)aTarget
              selector: (SEL)aSelector
                object: (id)anArgument;
 

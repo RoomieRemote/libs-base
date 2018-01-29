@@ -153,19 +153,19 @@ typedef NSUInteger NSStreamEvent;
  * Creates and returns an initialized NSInputStream object
  * for reading from data.
  */
-+ (id) inputStreamWithData: (NSData *)data;
++ (instancetype) inputStreamWithData: (NSData *)data;
 
 /**
  * Creates and returns an initialized NSInputStream object that reads data from 
  * the file at the specified path.
  */
-+ (id) inputStreamWithFileAtPath: (NSString *)path;
++ (instancetype) inputStreamWithFileAtPath: (NSString *)path;
  
 /**
  * Creates and returns an initialized NSInputStream object that reads data from 
  * the specified URL.
  */
-+ (id) inputStreamWithURL: (NSURL *)url;
++ (instancetype) inputStreamWithURL: (NSURL *)url;
 
 /**
  * Returns a pointer to the read buffer in buffer and, by reference, the number 
@@ -183,19 +183,19 @@ typedef NSUInteger NSStreamEvent;
 /**
  * Returns an initialized NSInputStream object for reading from data.
  */ 
-- (id) initWithData: (NSData *)data;
+- (instancetype) initWithData: (NSData *)data;
 
 /**
  * Returns an initialized NSInputStream object for reading from the file at the 
  * specified path.
  */
-- (id) initWithFileAtPath: (NSString *)path;
+- (instancetype) initWithFileAtPath: (NSString *)path;
 
 /**
  * Returns an initialized NSInputStream object for reading from the
  * specified URL.
  */
-- (id) initWithURL: (NSURL *)url;
+- (instancetype) initWithURL: (NSURL *)url;
 
 /**
  * Reads up to len bytes into buffer, returning the actual number of bytes read.
@@ -214,19 +214,19 @@ typedef NSUInteger NSStreamEvent;
  * Creates and returns an initialized NSOutputStream object
  * that can write to buffer, up to a maximum of capacity bytes.
  */
-+ (id) outputStreamToBuffer: (uint8_t *)buffer capacity: (NSUInteger)capacity;
++ (instancetype) outputStreamToBuffer: (uint8_t *)buffer capacity: (NSUInteger)capacity;
 
 /**
  * Creates and returns an initialized NSOutputStream object
  * for writing to the file specified by path.
  */
-+ (id) outputStreamToFileAtPath: (NSString *)path append: (BOOL)shouldAppend;
++ (instancetype) outputStreamToFileAtPath: (NSString *)path append: (BOOL)shouldAppend;
 
 /**
  * Creates and returns an initialized NSOutputStream object
  * that will write stream data to memory.
  */
-+ (id) outputStreamToMemory;
++ (instancetype) outputStreamToMemory;
 
 /**
  * Returns YES if the receiver can be written to,
@@ -239,7 +239,7 @@ typedef NSUInteger NSStreamEvent;
  * Returns an initialized NSOutputStream object that can write to buffer, 
  * up to a maximum of capacity bytes.
  */
-- (id) initToBuffer: (uint8_t *)buffer capacity: (NSUInteger)capacity;
+- (instancetype) initToBuffer: (uint8_t *)buffer capacity: (NSUInteger)capacity;
 
 /**
  * Returns an initialized NSOutputStream object for writing to the file
@@ -247,12 +247,12 @@ typedef NSUInteger NSStreamEvent;
  * If shouldAppend is YES, newly written data will be appended to any 
  * existing file contents.
  */
-- (id) initToFileAtPath: (NSString *)path append: (BOOL)shouldAppend;
+- (instancetype) initToFileAtPath: (NSString *)path append: (BOOL)shouldAppend;
 
 /**
  * Returns an initialized NSOutputStream object that will write to memory.
  */
-- (id) initToMemory;
+- (instancetype) initToMemory;
 
 /**
  * Writes the contents of buffer, up to a maximum of len bytes,

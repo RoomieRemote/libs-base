@@ -65,10 +65,10 @@ typedef NSUInteger NSExpressionType;
 - (NSArray *) arguments;
 - (id) constantValue;
 - (NSExpressionType) expressionType;
-- (id) expressionValueWithObject: (id)object
+- (instancetype) expressionValueWithObject: (id)object
 			 context: (NSMutableDictionary *)context;
 - (NSString *) function;
-- (id) initWithExpressionType: (NSExpressionType) type;
+- (instancetype) initWithExpressionType: (NSExpressionType) type;
 - (NSString *) keyPath;
 - (NSExpression *) operand;
 - (NSString *) variable;

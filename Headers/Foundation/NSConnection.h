@@ -112,7 +112,7 @@ GS_NSConnection_IVARS;
 + (NSConnection*) connectionWithRegisteredName: (NSString*)n
                                           host: (NSString*)h
 			       usingNameServer: (NSPortNameServer*)s;
-+ (id) currentConversation;
++ (instancetype) currentConversation;
 + (NSConnection*) defaultConnection;
 + (NSDistantObject*) rootProxyForConnectionWithRegisteredName: (NSString*)n
                                                          host: (NSString*)h;
@@ -120,9 +120,9 @@ GS_NSConnection_IVARS;
   host: (NSString*)h usingNameServer: (NSPortNameServer*)s;
 
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_5,GS_API_LATEST) 
-+ (id) serviceConnectionWithName: (NSString *)name
++ (instancetype) serviceConnectionWithName: (NSString *)name
                       rootObject: (id)root;
-+ (id) serviceConnectionWithName: (NSString *)name
++ (instancetype) serviceConnectionWithName: (NSString *)name
                       rootObject: (id)root
                  usingNameServer: (NSPortNameServer *)server;
 #endif
@@ -132,7 +132,7 @@ GS_NSConnection_IVARS;
 - (id) delegate;
 - (void) enableMultipleThreads;
 - (BOOL) independentConversationQueueing;
-- (id) initWithReceivePort: (NSPort*)r
+- (instancetype) initWithReceivePort: (NSPort*)r
 		  sendPort: (NSPort*)s;
 - (void) invalidate;
 - (BOOL) isValid;

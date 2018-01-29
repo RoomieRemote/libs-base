@@ -20,7 +20,7 @@ struct _Unwind_Exception;
 /**
  * Constructor called by the runtime. 
  */
-+ (id) exceptionWithForeignException: (struct _Unwind_Exception*)ex;
++ (instancetype) exceptionWithForeignException: (struct _Unwind_Exception*)ex;
 /**
  * Returns a pointer to the thrown value.  When a value is thrown in C++, it is
  * copied into the exception structure.  The real type of the pointee is the

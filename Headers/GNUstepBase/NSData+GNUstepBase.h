@@ -45,7 +45,7 @@ extern "C" {
  * Failure to allocate memory to hold the random data or,<br />
  * Failure of the underlying random data generation.
  */
-+ (id) dataWithRandomBytesOfLength: (NSUInteger)length;
++ (instancetype) dataWithRandomBytesOfLength: (NSUInteger)length;
 
 /** Returns an NSString object containing a backslash escaped representation
  * of the receiver.
@@ -107,7 +107,7 @@ extern "C" {
  * If the string does not contain one or more pairs of hexadecimal digits
  * then an exception is raised. 
  */
-- (id) initWithHexadecimalRepresentation: (NSString*)string;
+- (instancetype) initWithHexadecimalRepresentation: (NSString*)string;
 
 /**
  * Creates an MD5 digest of the information stored in the receiver and

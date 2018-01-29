@@ -117,7 +117,7 @@ extern "C" {
  * Initialize a new instance for communications over send and recv, and send an
  * initial message through send as specified by comp.
  */
-- (id) initWithReceivePort: (NSPort*)recv
+- (instancetype) initWithReceivePort: (NSPort*)recv
 		  sendPort: (NSPort*)send
 		components: (NSArray*)comp;
 

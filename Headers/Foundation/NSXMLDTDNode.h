@@ -94,7 +94,7 @@ typedef NSUInteger NSXMLDTDNodeKind;
 /** <init />
  * Initialises the receiver based on the contents of the supplied XML.
  */
-- (id) initWithXMLString: (NSString*)string;
+- (instancetype) initWithXMLString: (NSString*)string;
 
 /**
  * Returns YES if the system id is set, NO otherwise.<br />

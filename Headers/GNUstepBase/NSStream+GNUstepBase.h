@@ -76,12 +76,12 @@ extern "C" {
  * representation of an internet address (either the dot separated ipv4
  * syntax or the colon separated ipv6 syntax).
  */
-+ (id) serverStreamToAddr: (NSString*)addr port: (NSInteger)port;
++ (instancetype) serverStreamToAddr: (NSString*)addr port: (NSInteger)port;
 
 /**
  * Create a local (unix domain or named pipe) server stream.
  */
-+ (id) serverStreamToAddr: (NSString*)addr;
++ (instancetype) serverStreamToAddr: (NSString*)addr;
 
 /**
  * This is the method that accepts a connection and generates two streams
@@ -100,13 +100,13 @@ extern "C" {
  * representation of an internet address (either the dot separated ipv4
  * syntax or the colon separated ipv6 syntax).
  */
-- (id) initToAddr: (NSString*)addr port: (NSInteger)port;
+- (instancetype) initToAddr: (NSString*)addr port: (NSInteger)port;
 
 /**
  * The designated initializer for a local (unix domain or named pipe)
  * server stream.
  */
-- (id) initToAddr: (NSString*)addr;
+- (instancetype) initToAddr: (NSString*)addr;
 
 @end
 

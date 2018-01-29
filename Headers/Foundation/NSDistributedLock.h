@@ -55,7 +55,7 @@ extern "C" {
 }
 
 + (NSDistributedLock*) lockWithPath: (NSString*)aPath;
-- (id) initWithPath: (NSString*)aPath;
+- (instancetype) initWithPath: (NSString*)aPath;
 
 - (void) breakLock;
 - (NSDate*) lockDate;

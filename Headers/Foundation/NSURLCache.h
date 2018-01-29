@@ -71,12 +71,12 @@ typedef enum
  * response and data.<br />
  * Returns the cached response.
  */
-- (id) initWithResponse: (NSURLResponse *)response data: (NSData *)data;
+- (instancetype) initWithResponse: (NSURLResponse *)response data: (NSData *)data;
 
 /**
  * Returns the receiver initialized with the provided parameters.
  */
-- (id) initWithResponse: (NSURLResponse *)response
+- (instancetype) initWithResponse: (NSURLResponse *)response
 		   data: (NSData *)data
 	       userInfo: (NSDictionary *)userInfo
 	  storagePolicy: (NSURLCacheStoragePolicy)storagePolicy;
@@ -157,7 +157,7 @@ typedef enum
  * (in bytes) and using the specified location on disk for persistent
  * storage.
  */
-- (id) initWithMemoryCapacity: (NSUInteger)memoryCapacity
+- (instancetype) initWithMemoryCapacity: (NSUInteger)memoryCapacity
 		 diskCapacity: (NSUInteger)diskCapacity
 		     diskPath: (NSString *)path;
 

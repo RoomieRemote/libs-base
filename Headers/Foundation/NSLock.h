@@ -183,7 +183,7 @@ extern "C" {
 /**
  * Initialize lock with given condition.
  */
-- (id) initWithCondition: (NSInteger)value;
+- (instancetype) initWithCondition: (NSInteger)value;
 
 /**
  * Return the current condition of the lock.

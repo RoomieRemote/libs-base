@@ -76,7 +76,7 @@ typedef enum {
  * The user identifies the credential and must be specified but the
  * password may be nil.
  */
-- (id) initWithUser: (NSString *)user
+- (instancetype) initWithUser: (NSString *)user
 	   password: (NSString *)password
 	persistence: (NSURLCredentialPersistence)persistence;
 

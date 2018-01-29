@@ -55,7 +55,7 @@ typedef	struct {
 
 + (NSAffineTransform*) transform;
 - (void) appendTransform: (NSAffineTransform*)aTransform;
-- (id) initWithTransform: (NSAffineTransform*)aTransform;
+- (instancetype) initWithTransform: (NSAffineTransform*)aTransform;
 - (void) invert;
 - (void) prependTransform: (NSAffineTransform*)aTransform;
 - (void) rotateByDegrees: (CGFloat)angle;

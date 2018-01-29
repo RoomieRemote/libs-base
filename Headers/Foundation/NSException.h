@@ -170,7 +170,7 @@ extern "C" {
  * <init/>Initializes a newly allocated NSException object with a
  * name, reason and a dictionary userInfo.
  */
-- (id) initWithName: (NSString*)name 
+- (instancetype) initWithName: (NSString*)name 
 	     reason: (NSString*)reason 
 	   userInfo: (NSDictionary*)userInfo;
 

@@ -82,7 +82,7 @@ extern "C" {
 }
 
 /* Initializing an archiver */
-- (id) initForWritingWithMutableData: (NSMutableData*)mdata;
+- (instancetype) initForWritingWithMutableData: (NSMutableData*)mdata;
 
 /* Archiving Data */
 + (NSData*) archivedDataWithRootObject: (id)rootObject;
@@ -196,7 +196,7 @@ extern "C" {
 }
 
 /* Initializing an unarchiver */
-- (id) initForReadingWithData: (NSData*)anObject;
+- (instancetype) initForReadingWithData: (NSData*)anObject;
 
 /* Decoding objects */
 + (id) unarchiveObjectWithData: (NSData*)anObject;

@@ -119,7 +119,7 @@ GS_EXPORT NSString * const NSISO8601Calendar;
 /** Returns a version of the current locale which automatically updates
  *  when locale settngs are changed.
  */
-+ (id) autoupdatingCurrentLocale;
++ (instancetype) autoupdatingCurrentLocale;
 #endif
 
 /** Returns an array of NSStrings with all the available locale identifiers.
@@ -155,7 +155,7 @@ GS_EXPORT NSString * const NSISO8601Calendar;
 
 /** Returns the current locale information.
  */
-+ (id) currentLocale;
++ (instancetype) currentLocale;
 
 /** Returns an array of NSString representing all known country codes.
  */
@@ -189,7 +189,7 @@ GS_EXPORT NSString * const NSISO8601Calendar;
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_6, GS_API_LATEST)
 /** Returns a locale initialised with the given locale identifier.
  */
-+ (id) localeWithLocaleIdentifier:(NSString *)string;
++ (instancetype) localeWithLocaleIdentifier:(NSString *)string;
 #endif
 
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_5, GS_API_LATEST)
@@ -201,7 +201,7 @@ GS_EXPORT NSString * const NSISO8601Calendar;
 
 /** Returns the the system locale.
  */
-+ (id) systemLocale;
++ (instancetype) systemLocale;
 
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_6, GS_API_LATEST)
 /** Returns the windows locale code corresponding to the staqndard locale
@@ -220,7 +220,7 @@ GS_EXPORT NSString * const NSISO8601Calendar;
 /** Initialises the receiver to be the locale specified by the identifier.
  * This may result in replacement of the receiver by an existing locale.
  */
-- (id) initWithLocaleIdentifier: (NSString *)string;
+- (instancetype) initWithLocaleIdentifier: (NSString *)string;
 
 /** Returns the canonical identifier for the receiver (which
  * may differ from the identifgier used to create the receiver
@@ -230,7 +230,7 @@ GS_EXPORT NSString * const NSISO8601Calendar;
 
 /** Returns the named object from the receiver locale.
  */
-- (id) objectForKey: (id)key;
+- (instancetype) objectForKey: (id)key;
 
 @end
 

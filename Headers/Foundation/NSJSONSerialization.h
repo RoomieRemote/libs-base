@@ -50,10 +50,10 @@ typedef NSUInteger NSJSONReadingOptions;
                         options:(NSJSONWritingOptions)opt
                           error:(NSError **)error;
 + (BOOL)isValidJSONObject:(id)obj;
-+ (id)JSONObjectWithData:(NSData *)data
++ (instancetype)JSONObjectWithData:(NSData *)data
                  options:(NSJSONReadingOptions)opt
                    error:(NSError **)error;
-+ (id)JSONObjectWithStream:(NSInputStream *)stream
++ (instancetype)JSONObjectWithStream:(NSInputStream *)stream
                    options:(NSJSONReadingOptions)opt
                      error:(NSError **)error;
 + (NSInteger)writeJSONObject:(id)obj

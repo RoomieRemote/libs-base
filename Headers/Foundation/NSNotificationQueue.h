@@ -121,7 +121,7 @@ struct _NSNotificationQueueList;
 /* Creating Notification Queues */
 
 + (NSNotificationQueue*) defaultQueue;
-- (id) initWithNotificationCenter: (NSNotificationCenter*)notificationCenter;
+- (instancetype) initWithNotificationCenter: (NSNotificationCenter*)notificationCenter;
 
 /* Inserting and Removing Notifications From a Queue */
 

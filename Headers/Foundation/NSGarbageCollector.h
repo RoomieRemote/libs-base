@@ -43,7 +43,7 @@ extern "C" {
 /** Returns the garbage collector instance ... there is only one.<br />
  * Returns nil if the process is not using garbage collection.
  */
-+ (id) defaultCollector;
++ (instancetype) defaultCollector;
 
 /** Collects some memory.
  */

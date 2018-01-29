@@ -86,12 +86,12 @@ DEFINE_BLOCK_TYPE(GSKeysAndObjectsEnumeratorBlock, void,
 
 - (instancetype) initWithDictionary:
     (GS_GENERIC_CLASS(NSDictionary,KeyT, ValT)*)otherDictionary;
-- (id) initWithDictionary: (GS_GENERIC_CLASS(NSDictionary,KeyT, ValT)*)other
+- (instancetype) initWithDictionary: (GS_GENERIC_CLASS(NSDictionary,KeyT, ValT)*)other
                 copyItems: (BOOL)shouldCopy;
-- (id) initWithObjects: (GS_GENERIC_CLASS(NSArray,KeyT)*)objects
+- (instancetype) initWithObjects: (GS_GENERIC_CLASS(NSArray,KeyT)*)objects
                forKeys: (GS_GENERIC_CLASS(NSArray,ValT)*)keys;
-- (id) initWithObjectsAndKeys: (GS_GENERIC_TYPE(ValT))firstObject, ...;
-- (id) initWithObjects: (const GS_GENERIC_TYPE(ValT)[])objects
+- (instancetype) initWithObjectsAndKeys: (GS_GENERIC_TYPE(ValT))firstObject, ...;
+- (instancetype) initWithObjects: (const GS_GENERIC_TYPE(ValT)[])objects
 	       forKeys: (const GS_GENERIC_TYPE_F(KeyT,id<NSCopying>)[])keys
 		 count: (NSUInteger)count; // Primitive
 - (BOOL) isEqualToDictionary: (GS_GENERIC_CLASS(NSDictionary,KeyT, ValT)*)other;

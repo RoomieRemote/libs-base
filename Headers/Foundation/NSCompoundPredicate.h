@@ -55,7 +55,7 @@ typedef NSUInteger NSCompoundPredicateType;
 + (NSPredicate *) orPredicateWithSubpredicates: (NSArray *)list;
 
 - (NSCompoundPredicateType) compoundPredicateType;
-- (id) initWithType: (NSCompoundPredicateType)type
+- (instancetype) initWithType: (NSCompoundPredicateType)type
       subpredicates: (NSArray *)list;
 - (NSArray *) subpredicates;
 

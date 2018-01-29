@@ -64,14 +64,14 @@ extern "C" {
 /**
  * OpenStep compatibility.
  */
-- (id) initWithMachMessage: (void*)buffer;
+- (instancetype) initWithMachMessage: (void*)buffer;
 
 /** <init/> Initializes to send message described by items (which should
  * contain only [NSPort] and/or [NSData] objects, with contents in network
  * byte order) over aPort.  If/when a reply to the message is sent, it will
  * arrive on anotherPort.
  */
-- (id) initWithSendPort: (NSPort*)aPort
+- (instancetype) initWithSendPort: (NSPort*)aPort
 	    receivePort: (NSPort*)anotherPort
 	     components: (NSArray*)items;
 

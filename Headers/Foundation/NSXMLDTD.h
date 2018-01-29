@@ -75,13 +75,13 @@ extern "C" {
 
 /** Load data from URL and initialise the receiver with the contents.
  */
-- (id) initWithContentsOfURL: (NSURL*)url
+- (instancetype) initWithContentsOfURL: (NSURL*)url
                      options: (NSUInteger)mask
                        error: (NSError**)error;
 
 /** <init />
  */
-- (id) initWithData: (NSData*)data
+- (instancetype) initWithData: (NSData*)data
             options: (NSUInteger)mask
               error: (NSError**)error;
 

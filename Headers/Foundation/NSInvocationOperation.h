@@ -44,11 +44,11 @@ extern "C" {
     void        *_reserved;
 }
 
-- (id) initWithInvocation: (NSInvocation *)inv;
-- (id) initWithTarget: (id)target selector: (SEL)aSelector object: (id)arg;
+- (instancetype) initWithInvocation: (NSInvocation *)inv;
+- (instancetype) initWithTarget: (id)target selector: (SEL)aSelector object: (id)arg;
 
 - (NSInvocation *) invocation;
-- (id) result;
+- (instancetype) result;
 
 @end
 

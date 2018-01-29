@@ -330,13 +330,13 @@ GS_EXPORT NSString* const GSLocale;
 /**
  * Initializes defaults for current user calling initWithUser:
  */
-- (id) init;
+- (instancetype) init;
 
 /** <init />
  * Initializes defaults for the specified user.<br />
  * Returns an object with an empty search list.
  */
-- (id) initWithUser: (NSString*)userName;
+- (instancetype) initWithUser: (NSString*)userName;
 
 /**
  * Looks up a value for a specified default using -objectForKey:

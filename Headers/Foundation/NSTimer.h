@@ -105,7 +105,7 @@ extern "C" {
 #endif
 
 #if	OS_API_VERSION(MAC_OS_X_VERSION_10_2, GS_API_LATEST)
-- (id) initWithFireDate: (NSDate*)fd
+- (instancetype) initWithFireDate: (NSDate*)fd
 	       interval: (NSTimeInterval)ti
 		 target: (id)object
 	       selector: (SEL)selector

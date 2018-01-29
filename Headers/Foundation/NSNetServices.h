@@ -368,10 +368,10 @@ GS_EXPORT NSString * const NSNetServicesErrorDomain;
 + (NSData *) dataFromTXTRecordDictionary: (NSDictionary *) txtDictionary;
 + (NSDictionary *) dictionaryFromTXTRecordData: (NSData *) txtData;
 
-- (id) initWithDomain: (NSString *) domain
+- (instancetype) initWithDomain: (NSString *) domain
                  type: (NSString *) type
                  name: (NSString *) name;
-- (id) initWithDomain: (NSString *) domain
+- (instancetype) initWithDomain: (NSString *) domain
                  type: (NSString *) type
                  name: (NSString *) name
                  port: (NSInteger) port;
@@ -451,7 +451,7 @@ GS_EXPORT NSString * const NSNetServicesErrorDomain;
 #endif
 }
 
-- (id) init;
+- (instancetype) init;
 
 - (void) removeFromRunLoop: (NSRunLoop *) aRunLoop
                    forMode: (NSString *) mode;

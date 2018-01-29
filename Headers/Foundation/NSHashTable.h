@@ -61,22 +61,22 @@ typedef NSUInteger NSHashTableOptions;
 
 @interface NSHashTable : NSObject <NSCopying, NSCoding, NSFastEnumeration>
 
-+ (id) hashTableWithOptions: (NSPointerFunctionsOptions)options;
++ (instancetype) hashTableWithOptions: (NSPointerFunctionsOptions)options;
 
-+ (id) hashTableWithWeakObjects;
++ (instancetype) hashTableWithWeakObjects;
 /**
  * Creates a hash table that uses zeroing weak references (either using the
  * automatic reference counting or garbage collection mechanism, depending on
  * which mode this framework is compiled in) so that objects are removed when
  * their last other reference disappears.
  */
-+ (id) weakObjectsHashTable;
++ (instancetype) weakObjectsHashTable;
 
 
-- (id) initWithOptions: (NSPointerFunctionsOptions)options
+- (instancetype) initWithOptions: (NSPointerFunctionsOptions)options
 	      capacity: (NSUInteger)initialCapacity;
 
-- (id) initWithPointerFunctions: (NSPointerFunctions*)functions
+- (instancetype) initWithPointerFunctions: (NSPointerFunctions*)functions
 		       capacity: (NSUInteger)initialCapacity;
 
 /** Adds the object to the receiver.

@@ -59,9 +59,9 @@ extern "C" {
 			  connection: (NSConnection*)aConnection;
 
 - (NSConnection*) connectionForProxy;
-- (id) initWithLocal: (id)anObject
+- (instancetype) initWithLocal: (id)anObject
 	  connection: (NSConnection*)aConnection;
-- (id) initWithTarget: (unsigned)target
+- (instancetype) initWithTarget: (unsigned)target
 	   connection: (NSConnection*)aConnection;
 - (NSMethodSignature*) methodSignatureForSelector: (SEL)aSelector;
 - (void) setProtocolForProxy: (Protocol*)aProtocol;

@@ -124,7 +124,7 @@ extern "C" {
 /** For use by macros only.
  */
 @interface NSInvocation (MacroSetup)
-- (id) initWithMethodSignature: (NSMethodSignature*)aSignature;
+- (instancetype) initWithMethodSignature: (NSMethodSignature*)aSignature;
 + (id) _newProxyForInvocation: (id)target;
 + (id) _newProxyForMessage: (id)target;
 + (NSInvocation*) _returnInvocationAndDestroyProxy: (id)proxy;

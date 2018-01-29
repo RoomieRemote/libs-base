@@ -43,18 +43,18 @@ extern "C" {
 
 // Allocating and Initializing a FileHandle Object
 
-+ (id) fileHandleForReadingAtPath: (NSString*)path;
-+ (id) fileHandleForWritingAtPath: (NSString*)path;
-+ (id) fileHandleForUpdatingAtPath: (NSString*)path;
-+ (id) fileHandleWithStandardError;
-+ (id) fileHandleWithStandardInput;
-+ (id) fileHandleWithStandardOutput;
-+ (id) fileHandleWithNullDevice;
++ (instancetype) fileHandleForReadingAtPath: (NSString*)path;
++ (instancetype) fileHandleForWritingAtPath: (NSString*)path;
++ (instancetype) fileHandleForUpdatingAtPath: (NSString*)path;
++ (instancetype) fileHandleWithStandardError;
++ (instancetype) fileHandleWithStandardInput;
++ (instancetype) fileHandleWithStandardOutput;
++ (instancetype) fileHandleWithNullDevice;
 
-- (id) initWithFileDescriptor: (int)desc;
-- (id) initWithFileDescriptor: (int)desc closeOnDealloc: (BOOL)flag;
-- (id) initWithNativeHandle: (void*)hdl;
-- (id) initWithNativeHandle: (void*)hdl closeOnDealloc: (BOOL)flag;
+- (instancetype) initWithFileDescriptor: (int)desc;
+- (instancetype) initWithFileDescriptor: (int)desc closeOnDealloc: (BOOL)flag;
+- (instancetype) initWithNativeHandle: (void*)hdl;
+- (instancetype) initWithNativeHandle: (void*)hdl closeOnDealloc: (BOOL)flag;
 
 // Returning file handles
 
@@ -184,16 +184,16 @@ GS_EXPORT NSString * const NSFileHandleOperationException;
 // GNUstep class extensions
 
 @interface NSFileHandle (GNUstepExtensions)
-+ (id) fileHandleAsServerAtAddress: (NSString*)address
++ (instancetype) fileHandleAsServerAtAddress: (NSString*)address
 			   service: (NSString*)service
 			  protocol: (NSString*)protocol;
-+ (id) fileHandleAsClientAtAddress: (NSString*)address
++ (instancetype) fileHandleAsClientAtAddress: (NSString*)address
 			   service: (NSString*)service
 			  protocol: (NSString*)protocol;
-+ (id) fileHandleAsClientInBackgroundAtAddress: (NSString*)address
++ (instancetype) fileHandleAsClientInBackgroundAtAddress: (NSString*)address
 				       service: (NSString*)service
 				      protocol: (NSString*)protocol;
-+ (id) fileHandleAsClientInBackgroundAtAddress: (NSString*)address
++ (instancetype) fileHandleAsClientInBackgroundAtAddress: (NSString*)address
 				       service: (NSString*)service
 				      protocol: (NSString*)protocol
 				      forModes: (NSArray*)modes;

@@ -54,19 +54,19 @@ extern "C" {
 /**
  * Return an empty set.
  */
-+ (id) indexSet;
++ (instancetype) indexSet;
 
 /**
  * Return a set containing the single value anIndex, or returns nil if
  * anIndex is NSNotFound.
  */
-+ (id) indexSetWithIndex: (NSUInteger)anIndex;
++ (instancetype) indexSetWithIndex: (NSUInteger)anIndex;
 
 /**
  * Return a set containing all the values in aRange, or returns nil if
  * aRange contains NSNotFound.
  */
-+ (id) indexSetWithIndexesInRange: (NSRange)aRange;
++ (instancetype) indexSetWithIndexesInRange: (NSRange)aRange;
 
 /**
  * Returns YES if the receiver contains anIndex, NO otherwise.
@@ -159,18 +159,18 @@ DEFINE_BLOCK_TYPE(GSIndexSetEnumerationBlock, void, NSUInteger, BOOL*);
  * Initialise the receiver to contain anIndex.  Returns the initialised
  * object or nil if anIndex is NSNotFound.
  */
-- (id) initWithIndex: (NSUInteger)anIndex;
+- (instancetype) initWithIndex: (NSUInteger)anIndex;
 
 /** <init />
  * Initialise the receiver to contain all index values in aRange.
  * Returns the initialised object or nil if aRange contains NSNotFound.
  */
-- (id) initWithIndexesInRange: (NSRange)aRange;
+- (instancetype) initWithIndexesInRange: (NSRange)aRange;
 
 /**
  * Initialises the receiver with the index values from aSet.
  */
-- (id) initWithIndexSet: (NSIndexSet*)aSet;
+- (instancetype) initWithIndexSet: (NSIndexSet*)aSet;
 
 /**
  * Returns YES if the receiver contains any index values which lie in aRange,

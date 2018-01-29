@@ -258,9 +258,9 @@ enum
   void  *_dummy3;
 }
 
-+ (id) currentCalendar;
++ (instancetype) currentCalendar;
 
-- (id) initWithCalendarIdentifier: (NSString *) string;
+- (instancetype) initWithCalendarIdentifier: (NSString *) string;
 - (NSString *) calendarIdentifier;
 
 - (NSDateComponents *) components: (NSUInteger) unitFlags
@@ -304,7 +304,7 @@ enum
                 forDate: (NSDate *) date;
 
 #if OS_API_VERSION(MAC_OS_X_VERSION_10_5, GS_API_LATEST)
-+ (id) autoupdatingCurrentCalendar;
++ (instancetype) autoupdatingCurrentCalendar;
 
 - (BOOL) rangeOfUnit: (NSCalendarUnit) unit
            startDate: (NSDate **) datep

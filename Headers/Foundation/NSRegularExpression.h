@@ -110,13 +110,13 @@ DEFINE_BLOCK_TYPE(GSRegexBlock, void, NSTextCheckingResult*,
 + (NSRegularExpression*) regularExpressionWithPattern: (NSString*)aPattern
   options: (NSRegularExpressionOptions)opts
   error: (NSError**)e;
-- (id) initWithPattern: (NSString*)aPattern
+- (instancetype) initWithPattern: (NSString*)aPattern
 	       options: (NSRegularExpressionOptions)opts
 		 error: (NSError**)e;
 + (NSRegularExpression*) regularExpressionWithPattern: (NSString*)aPattern
   options: (NSRegularExpressionOptions)opts
   error: (NSError**)e;
-- (id) initWithPattern: (NSString*)aPattern
+- (instancetype) initWithPattern: (NSString*)aPattern
 	       options: (NSRegularExpressionOptions)opts
 		 error: (NSError**)e;
 - (NSString*) pattern;

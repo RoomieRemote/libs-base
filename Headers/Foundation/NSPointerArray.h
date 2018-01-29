@@ -48,20 +48,20 @@ extern "C" {
 /** Allocate an instance, initialise using initWithOptions: and
  * return it autoreleased.
  */
-+ (id) pointerArrayWithOptions: (NSPointerFunctionsOptions)options;
++ (instancetype) pointerArrayWithOptions: (NSPointerFunctionsOptions)options;
 
 /** Allocate an instance, initialise using initWithPointerFunctions: and
  * return it autoreleased.
  */
-+ (id) pointerArrayWithPointerFunctions: (NSPointerFunctions *)functions;
++ (instancetype) pointerArrayWithPointerFunctions: (NSPointerFunctions *)functions;
 
 /** Returns a new pointer array for storing strong (retained) references to
  * objects.
  */
-+ (id) strongObjectsPointerArray;
++ (instancetype) strongObjectsPointerArray;
 /** Returns a new pointer array for storing zeroing weak references to objects.
  */
-+ (id) weakObjectsPointerArray;
++ (instancetype) weakObjectsPointerArray;
 
 
 /** Removes all nil/zero items from the array.
@@ -74,11 +74,11 @@ extern "C" {
 
 /** Initialises the receiver with the specified options.
  */
-- (id) initWithOptions: (NSPointerFunctionsOptions)options;
+- (instancetype) initWithOptions: (NSPointerFunctionsOptions)options;
 
 /** Initialises the receiver using the supplied object.
  */
-- (id) initWithPointerFunctions: (NSPointerFunctions*)functions;
+- (instancetype) initWithPointerFunctions: (NSPointerFunctions*)functions;
 
 /** Adds an item at the end of the array.
  */
@@ -126,12 +126,12 @@ extern "C" {
 /** Creates an instance configured to hold objects and prevent them from
  * being garbage collected.
  */
-+ (id) pointerArrayWithStrongObjects;
++ (instancetype) pointerArrayWithStrongObjects;
 
 /** Creates an instance configured to hold objects, allowing them to be
  * garbage collected and replaced by nil if/when they are collected.
  */
-+ (id) pointerArrayWithWeakObjects;
++ (instancetype) pointerArrayWithWeakObjects;
 
 /** Returns an array containing all the non-nil objects from the receiver.
  */

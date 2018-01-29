@@ -152,7 +152,7 @@ GS_NSDateFormatter_IVARS;
  *  as "yesterday", or "first Tuesday of next month" if straight format-based
  *  conversion fails.
  */
-- (id) initWithDateFormat: (NSString *)format
+- (instancetype) initWithDateFormat: (NSString *)format
      allowNaturalLanguage: (BOOL)flag;
 
 

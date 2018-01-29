@@ -173,7 +173,7 @@ extern "C" {
  * The client is the object which receives messages about the progress
  * of the load.
  */
-- (id) initWithRequest: (NSURLRequest *)request
+- (instancetype) initWithRequest: (NSURLRequest *)request
 	cachedResponse: (NSCachedURLResponse *)cachedResponse
 		client: (id <NSURLProtocolClient>)client;
 

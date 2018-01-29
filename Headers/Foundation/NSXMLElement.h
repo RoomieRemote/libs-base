@@ -53,22 +53,22 @@ extern "C" {
 /**
  * Initialises the receiver with the given name.
  */
-- (id) initWithName: (NSString*)name;
+- (instancetype) initWithName: (NSString*)name;
 
 /**
  * Initialises the receiver with the given name and namespace URI.
  */
-- (id) initWithName: (NSString*)name URI: (NSString*)URI;
+- (instancetype) initWithName: (NSString*)name URI: (NSString*)URI;
 
 /**
  * Initialises the receiver as a text node with the given name and content.
  */
-- (id) initWithName: (NSString*)name stringValue: (NSString*)string;
+- (instancetype) initWithName: (NSString*)name stringValue: (NSString*)string;
 
 /**
  * Initialises the receiver by parsing the XML string supplied.
  */
-- (id) initWithXMLString: (NSString*)string error: (NSError**)error;
+- (instancetype) initWithXMLString: (NSString*)string error: (NSError**)error;
 
 /**
  * Searches for and returns all child elements which match name.

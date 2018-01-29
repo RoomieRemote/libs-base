@@ -105,7 +105,7 @@ typedef NSUInteger NSXMLDocumentContentKind;
 /**
  * Initialise using the data downloaded from the spplied url.
  */
-- (id) initWithContentsOfURL: (NSURL*)url
+- (instancetype) initWithContentsOfURL: (NSURL*)url
                      options: (NSUInteger)mask
                        error: (NSError**)error;
 
@@ -113,21 +113,21 @@ typedef NSUInteger NSXMLDocumentContentKind;
  * Returns a document created from data.<br />
  * Parse errors are returned in error.
  */
-- (id) initWithData: (NSData*)data
+- (instancetype) initWithData: (NSData*)data
             options: (NSUInteger)mask
               error: (NSError**)error;
 
 /**
  * Returns a document with a single child, the root element.
  */
-- (id) initWithRootElement: (NSXMLElement*)element;
+- (instancetype) initWithRootElement: (NSXMLElement*)element;
 
 /**
  * Initialises the receiver by creating a document from XML (or HTML
  * if the HTMLTidy option is set).
  * Parse errors are returned in the error argument.
 */
-- (id) initWithXMLString: (NSString*)string
+- (instancetype) initWithXMLString: (NSString*)string
                  options: (NSUInteger)mask
                    error: (NSError**)error;
 

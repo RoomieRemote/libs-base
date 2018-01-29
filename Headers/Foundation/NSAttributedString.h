@@ -66,9 +66,9 @@ extern "C" {
 }
 
 //Creating an NSAttributedString
-- (id) initWithString: (NSString*)aString;
-- (id) initWithAttributedString: (NSAttributedString*)attributedString;
-- (id) initWithString: (NSString*)aString attributes: (NSDictionary*)attributes;
+- (instancetype) initWithString: (NSString*)aString;
+- (instancetype) initWithAttributedString: (NSAttributedString*)attributedString;
+- (instancetype) initWithString: (NSString*)aString attributes: (NSDictionary*)attributes;
 
 //Retrieving character information
 - (NSUInteger) length;

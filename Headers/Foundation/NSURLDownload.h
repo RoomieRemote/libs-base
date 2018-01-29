@@ -71,13 +71,13 @@ extern "C" {
 /**
  * Initialises the receiver and start the download process.
  */
-- (id) initWithRequest: (NSURLRequest *)request delegate: (id)delegate;
+- (instancetype) initWithRequest: (NSURLRequest *)request delegate: (id)delegate;
 
 /** <init />
  * Initialises the receiver with data from a previous partial
  * download and resumes (or restarts) the downloading process.
  */
-- (id) initWithResumeData: (NSData *)resumeData
+- (instancetype) initWithResumeData: (NSData *)resumeData
 		 delegate: (id)delegate
 		     path: (NSString *)path;
 

@@ -75,7 +75,7 @@ extern NSString * const NSHTTPCookieVersion; /** Obtain cookie version */
  * Allocates and returns an autoreleasd instance using -initWithProperties:
  * to initialise it from properties.
  */
-+ (id) cookieWithProperties: (NSDictionary *)properties;
++ (instancetype) cookieWithProperties: (NSDictionary *)properties;
 
 /**
  * Returns an array of cookies parsed from the headerFields and URL
@@ -198,7 +198,7 @@ extern NSString * const NSHTTPCookieVersion; /** Obtain cookie version */
  *    </desc>
  *  </deflist>
  */
-- (id) initWithProperties: (NSDictionary *)properties;
+- (instancetype) initWithProperties: (NSDictionary *)properties;
 
 /**
  * Returns whether the receiver should only be sent over

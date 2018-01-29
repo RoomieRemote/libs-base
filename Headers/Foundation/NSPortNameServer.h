@@ -45,7 +45,7 @@ extern "C" {
 @class	NSPort, NSString, NSMutableArray;
 
 @interface	NSPortNameServer : NSObject
-+ (id) systemDefaultPortNameServer;
++ (instancetype) systemDefaultPortNameServer;
 - (NSPort*) portForName: (NSString*)name;
 - (NSPort*) portForName: (NSString*)name
 		 onHost: (NSString*)host;
@@ -70,7 +70,7 @@ extern "C" {
   @private id _internal GS_UNUSED_IVAR;
 #endif
 }
-+ (id) sharedInstance;
++ (instancetype) sharedInstance;
 - (NSPort*) portForName: (NSString*)name
 		 onHost: (NSString*)host;
 - (BOOL) registerPort: (NSPort*)port
@@ -80,7 +80,7 @@ extern "C" {
 
 
 @interface NSMessagePortNameServer : NSPortNameServer
-+ (id) sharedInstance;
++ (instancetype) sharedInstance;
 
 /** Returns the [NSMessagePort] instance registered for the specified name
  * if it exists on the local host.

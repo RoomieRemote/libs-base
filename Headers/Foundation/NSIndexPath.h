@@ -64,12 +64,12 @@ extern "C" {
 /**
  * Return a path containing the single value anIndex.
  */
-+ (id) indexPathWithIndex: (NSUInteger)anIndex;
++ (instancetype) indexPathWithIndex: (NSUInteger)anIndex;
 
 /**
  * Return a path containing all the indexes in the supplied array.
  */
-+ (id) indexPathWithIndexes: (NSUInteger*)indexes length: (NSUInteger)length;
++ (instancetype) indexPathWithIndexes: (NSUInteger*)indexes length: (NSUInteger)length;
 
 /**
  * Compares other with the receiver.<br />
@@ -105,13 +105,13 @@ extern "C" {
  * Returns the shared instance containing the specified index, creating it
  * and destroying the receiver if necessary.
  */
-- (id) initWithIndex: (NSUInteger)anIndex;
+- (instancetype) initWithIndex: (NSUInteger)anIndex;
 
 /** <init />
  * Returns the shared instance containing the specified index array,
  * creating it and destroying the receiver if necessary.
  */
-- (id) initWithIndexes: (NSUInteger*)indexes length: (NSUInteger)length;
+- (instancetype) initWithIndexes: (NSUInteger*)indexes length: (NSUInteger)length;
 
 /**
  * Returns the number of index values present in the receiver.

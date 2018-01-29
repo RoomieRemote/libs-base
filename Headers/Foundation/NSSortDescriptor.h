@@ -81,7 +81,7 @@ extern "C" {
  *
  * <p>See also -initWithKey:ascending:.</p>
  */
-+ (id) sortDescriptorWithKey: (NSString *)aKey ascending: (BOOL)ascending;
++ (instancetype) sortDescriptorWithKey: (NSString *)aKey ascending: (BOOL)ascending;
 
 /** <p>Returns an autoreleased sort descriptor initialized to perform 
  * comparisons in the specified order using aSelector to compare the property 
@@ -89,7 +89,7 @@ extern "C" {
  *
  * <p>See also -initWithKey:ascending:selector:.</p>
  */
-+ (id) sortDescriptorWithKey: (NSString *)aKey 
++ (instancetype) sortDescriptorWithKey: (NSString *)aKey 
                    ascending: (BOOL)ascending 
                     selector: (SEL)aSelector;
 #endif
@@ -97,14 +97,14 @@ extern "C" {
 /** Initialises the receiver for comparisons using the 'compare:' selector
  * and the specified key and ordering.
  */
-- (id) initWithKey: (NSString *)key
+- (instancetype) initWithKey: (NSString *)key
 	 ascending: (BOOL)ascending;
 
 /** <init />
  * Initialises the receiver to perform comparisons in the specified order
  * using selector to compar the property key of each object.
  */
-- (id) initWithKey: (NSString *)key
+- (instancetype) initWithKey: (NSString *)key
          ascending: (BOOL)ascending
           selector: (SEL)selector;
 
@@ -119,7 +119,7 @@ extern "C" {
 /** Returns a copy of the receiver which compares and sorts in reversed
  * order.
  */
-- (id) reversedSortDescriptor;
+- (instancetype) reversedSortDescriptor;
 @end
 
 @interface NSArray (NSSortDescriptorSorting)

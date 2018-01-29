@@ -100,12 +100,12 @@ GS_EXPORT NSString* const NSXMLParserErrorDomain;
 /**
  * Convenience method fetching data from anURL.<br />
  */
-- (id) initWithContentsOfURL: (NSURL*)anURL;
+- (instancetype) initWithContentsOfURL: (NSURL*)anURL;
 
 /** <init />
  * Initialises the parser with the specified xml data.
  */
-- (id) initWithData: (NSData*)data;
+- (instancetype) initWithData: (NSData*)data;
 
 /**
  * Parses the supplied data and returns YES on success, NO otherwise.
