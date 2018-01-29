@@ -106,6 +106,7 @@ extern "C" {
 + (void) detachNewThreadSelector: (SEL)aSelector
 		        toTarget: (id)aTarget
 		      withObject: (id)anArgument;
++ (void) detachNewThreadWithBlock:(void (^)(void))block;
 
 /**
  * Terminates the current thread.<br />
