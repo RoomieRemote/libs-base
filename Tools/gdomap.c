@@ -1500,18 +1500,24 @@ load_iface(const char* from)
   int	num_iface = 0;
 
   in_config = 1;
-  if (access(from, R_OK) != 0)
-    {
-      snprintf(ebuf, sizeof(ebuf),
-	"Unable to access address config - '%s'", from);
-      gdomap_log(LOG_CRIT);
-      exit(EXIT_FAILURE);
-    }
+
+  /* Can we open the fiel with current privs
+   */
   fptr = fopen(from, "rt");
   if (fptr == 0)
     {
       snprintf(ebuf, sizeof(ebuf),
 	"Unable to open address config - '%s'", from);
+      gdomap_log(LOG_CRIT);
+      exit(EXIT_FAILURE);
+    }
+  /* Should we be opening it?
+   */
+  if (access(from, R_OK) != 0)
+    {
+      fclose(fptr);
+      snprintf(ebuf, sizeof(ebuf),
+	"Unable to access address config - '%s'", from);
       gdomap_log(LOG_CRIT);
       exit(EXIT_FAILURE);
     }
@@ -2145,7 +2151,7 @@ init_probe()
 		      snprintf(ebuf, sizeof(ebuf), "netmask %s will be "
 			"treated as 255.255.255.0 for ",
 			inet_ntoa(mask[iface]));
-		      strcat(ebuf, inet_ntoa(addr[iface]));
+		      strncat(ebuf, inet_ntoa(addr[iface]), sizeof(ebuf)-1);
 		      gdomap_log(LOG_WARNING);
 		      hm |= ~255;
 		    }
@@ -2224,7 +2230,7 @@ init_probe()
 	    }
 	}
 
-      if (elen > 0)
+      if (other != NULL)
 	{
 	  free(other);
 	}
@@ -2552,7 +2558,10 @@ handle_io()
 		      dump_stats();
 		    }
 		}
-	      if (FD_ISSET(i, &wfds))
+              /* Look for a descriptor found to be writeable and which
+               * was not closed (due to reading eof etc)
+               */
+	      if (FD_ISSET(i, &wfds) && FD_ISSET(i, &write_fds))
 		{
 		  if (i == udp_desc)
 		    {
@@ -3708,10 +3717,10 @@ static int
 tryHost(unsigned char op, unsigned char len, const unsigned char *name,
 int ptype, struct sockaddr_in *addr, unsigned short *p, uptr *v)
 {
-  int desc = socket(AF_INET, SOCK_STREAM, 0);
-  int	e = 0;
+  int           desc = socket(AF_INET, SOCK_STREAM, 0);
+  int	        e = 0;
   uint32_t	port = *p;
-  gdo_req		msg;
+  gdo_req	msg;
   struct sockaddr_in sin;
 #if	defined(__MINGW__)
   uint32_t dummy;
@@ -3843,6 +3852,29 @@ int ptype, struct sockaddr_in *addr, unsigned short *p, uptr *v)
     }
   port = ntohl(port);
 
+  if (port < 0 || port > 0xffff)
+    {
+      if (GDO_NAMES == op)
+        {
+          if (port > 10000000)
+            {
+              snprintf(ebuf, sizeof(ebuf),
+                "Insanely large list of registered names");
+              gdomap_log(LOG_ERR);
+              close(desc);
+              return 5;     // Unreasonable number of registrations
+            }
+        }
+      else
+        {
+          snprintf(ebuf, sizeof(ebuf),
+            "Port number of incoming message is out of range");
+          gdomap_log(LOG_ERR);
+          close(desc);
+          return 5;     // Unreasonable port number
+        }
+    }
+
   /*
    *	Special case for GDO_SERVERS - allocate buffer and read list.
    */
@@ -3939,26 +3971,34 @@ nameFail(int why)
   switch (why)
     {
       case 0:	break;
+
       case 1:
 	snprintf(ebuf, sizeof(ebuf),
 	  "failed to contact name server - socket - %s",
 	  strerror(errno));
 	gdomap_log(LOG_ERR);
+        break;
+
       case 2:
 	snprintf(ebuf, sizeof(ebuf),
 	  "failed to contact name server - socket - %s",
 	  strerror(errno));
 	gdomap_log(LOG_ERR);
+        break;
+
       case 3:
 	snprintf(ebuf, sizeof(ebuf),
 	  "failed to contact name server - socket - %s",
 	  strerror(errno));
 	gdomap_log(LOG_ERR);
+        break;
+
       case 4:
 	snprintf(ebuf, sizeof(ebuf),
 	  "failed to contact name server - socket - %s",
 	  strerror(errno));
 	gdomap_log(LOG_ERR);
+        break;
     }
 }
 
@@ -4102,15 +4142,7 @@ nameServer(const char* name, const char* host, int op, int ptype, struct sockadd
        * the specified server on it.
        */
       rval = tryHost(GDO_SERVERS, 0, 0, ptype, &sin, &num, (uptr*)&b);
-      if (rval != 0)
-	{
-	  snprintf(ebuf, sizeof(ebuf),
-	    "failed to contact gdomap on %s(%s) - %s",
-	    local_hostname, inet_ntoa(sin.sin_addr), strerror(errno));
-	  gdomap_log(LOG_ERR);
-	  return -1;
-	}
-      if (rval == 0)
+      if (0 == rval)
 	{
 	  int	i;
 
@@ -4148,7 +4180,11 @@ nameServer(const char* name, const char* host, int op, int ptype, struct sockadd
 	}
       else
 	{
-	  nameFail(rval);
+	  snprintf(ebuf, sizeof(ebuf),
+	    "failed to contact gdomap on %s(%s) - %s",
+	    local_hostname, inet_ntoa(sin.sin_addr), strerror(errno));
+	  gdomap_log(LOG_ERR);
+	  return -1;
 	}
     }
   else
@@ -4723,19 +4759,24 @@ printf(
 	      char	buf[128];
 
 	      in_config = 1;
-	      if (access(optarg, R_OK) != 0)
-		{
-		  snprintf(ebuf, sizeof(ebuf),
-		    "Unable to access probe config - '%s'\n",
-		    optarg);
-		  gdomap_log(LOG_CRIT);
-		  exit(EXIT_FAILURE);
-		}
+              /* First see if we *can* access the file.
+               */
 	      fptr = fopen(optarg, "rt");
 	      if (fptr == 0)
 		{
 		  snprintf(ebuf, sizeof(ebuf),
 		    "Unable to open probe config - '%s'\n",
+		    optarg);
+		  gdomap_log(LOG_CRIT);
+		  exit(EXIT_FAILURE);
+		}
+              /* Now check that we *should* be accessing it.
+               */
+	      if (access(optarg, R_OK) != 0)
+		{
+                  fclose(fptr);
+		  snprintf(ebuf, sizeof(ebuf),
+		    "Unable to access probe config - '%s'\n",
 		    optarg);
 		  gdomap_log(LOG_CRIT);
 		  exit(EXIT_FAILURE);
@@ -5193,8 +5234,8 @@ queue_probe(struct in_addr* to, struct in_addr* from, int l, struct in_addr* e, 
     {
       snprintf(ebuf, sizeof(ebuf),
 	"Probing for server on '%s' from '", inet_ntoa(*to));
-      strcat(ebuf, inet_ntoa(*from));
-      strcat(ebuf, "'");
+      strncat(ebuf, inet_ntoa(*from), sizeof(ebuf)-1);
+      strncat(ebuf, "'", sizeof(ebuf)-1);
       gdomap_log(LOG_DEBUG);
       if (l > 0)
 	{

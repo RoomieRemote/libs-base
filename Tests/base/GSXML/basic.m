@@ -1,11 +1,14 @@
 #import <Foundation/Foundation.h>
 #import "Testing.h"
 #if     defined(GNUSTEP_BASE_LIBRARY) && (GS_USE_LIBXML == 1)
+#import <Foundation/NSFileManager.h>
 #import <GNUstepBase/GSXML.h>
 #import "ObjectTesting.h"
 int main()
 {
   NSAutoreleasePool   *arp = [NSAutoreleasePool new];
+  NSFileManager *mgr;
+  GSXMLParser   *parser;
   GSXMLDocument *doc;
   GSXMLNamespace *namespace;
   NSMutableArray *iparams;
@@ -13,7 +16,7 @@ int main()
   GSXMLNode	*node;
   GSXMLRPC	*rpc;
   NSString	*str;
-  NSData	*dat;
+  NSData        *dat;
 
   TEST_FOR_CLASS(@"GSXMLDocument",[GSXMLDocument alloc],
     "GSXMLDocument +alloc returns a GSXMLDocument");
@@ -145,6 +148,53 @@ int main()
     && [[iparams description] isEqual: [oparams description]],
     "Can parse a method call with a date");
 
+  mgr = [NSFileManager defaultManager];
+
+  str = [NSString stringWithFormat:
+@"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
+@"<!DOCTYPE foo [\n"
+@"<!ENTITY foo SYSTEM \"file://%@/GNUmakefile\">\n"
+@"]>\n"
+@"<file>&amp;&foo;&#65;</file>", [mgr currentDirectoryPath]];
+
+  parser = [GSXMLParser parserWithData:
+    [str dataUsingEncoding: NSUTF8StringEncoding]];
+  [parser substituteEntities: YES];
+  [parser parse];
+  PASS_EQUAL([[[parser document] root] content], @"&A",
+    "external entity is ignored")
+
+  parser = [GSXMLParser parserWithData:
+    [str dataUsingEncoding: NSUTF8StringEncoding]];
+  [parser substituteEntities: YES];
+  [parser resolveEntities: YES];
+  [parser parse];
+  str = [[[parser document] root] content];
+  PASS([str rangeOfString: @"MAKEFILES"].length > 0,
+    "external entity is resolved")
+
+  str = @"<!DOCTYPE plist PUBLIC \"-//GNUstep//DTD plist 0.9//EN\""
+    @" \"http://www.gnustep.org/plist-0_9.xml\">\n"
+    @"<plist></plist>";
+  parser = [GSXMLParser parserWithData:
+    [str dataUsingEncoding: NSUTF8StringEncoding]];
+  [parser substituteEntities: YES];
+  [parser resolveEntities: YES];
+  [parser doValidityChecking: YES];
+  PASS([parser parse] == NO, "empty plist is not valid")
+
+  str = @"<!DOCTYPE plist PUBLIC \"-//GNUstep//DTD plist 0.9//EN\""
+    @" \"http://www.gnustep.org/plist-0_9.xml\">\n"
+    @"<plist><string>xxx</string></plist>";
+  parser = [GSXMLParser parserWithData:
+    [str dataUsingEncoding: NSUTF8StringEncoding]];
+  [parser substituteEntities: YES];
+  [parser resolveEntities: YES];
+  [parser doValidityChecking: YES];
+  PASS([parser parse] == YES, "plist containing string is valid")
+
+  PASS_EQUAL([[[[[parser document] root] firstChild] firstChild] content],
+    @"xxx", "root/plist/string is parsed")
 
   [arp release]; arp = nil;
   return 0;

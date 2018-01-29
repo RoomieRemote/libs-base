@@ -71,6 +71,7 @@ builtin(include, config/pathtls.m4)dnl
 builtin(include, config/codeset.m4)dnl
 builtin(include, config/addlibrarypath.m4)dnl
 builtin(include, config/icu.m4)dnl
+builtin(include, config/pkg.m4)dnl
 
 AC_INIT
 AC_PREREQ([2.60])
@@ -1210,7 +1211,13 @@ AC_LANG_POP(C)
 
 
 AC_PATH_PROG(WHOAMI, whoami, echo, $PATH:/usr/ucb)
-AC_PATH_PROG(PKGCONFIG, pkg-config, yes, no)
+PKG_PROG_PKG_CONFIG
+# If the modern mechanism failswe may havew an older pkg-config
+# so try looking it up the old fashioned way.
+if test -z "$PKG_CONFIG"; then
+  AC_PATH_PROG(PKG_CONFIG,pkg-config,,)
+fi
+
 
 #--------------------------------------------------------------------
 # specific target_os options
@@ -1984,7 +1991,7 @@ GS_NONFRAGILE=0
 GS_MIXEDABI=0
 if test "$nonfragile" = "yes"; then
   saved_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS $OBJCFLAGS -fobjc-nonfragile-abi -x objective-c"
+  CPPFLAGS="$CPPFLAGS $OBJCFLAGS -x objective-c"
   AC_MSG_CHECKING(for non-fragile-abi support)
   AC_RUN_IFELSE([AC_LANG_SOURCE(
     [[#include "$srcdir/config/config.non-fragile-ivars.m"]])],
@@ -1992,7 +1999,6 @@ if test "$nonfragile" = "yes"; then
     non_fragile="$cross_non_fragile")
   CPPFLAGS="$saved_CPPFLAGS"
   if test $non_fragile = yes; then
-    OBJCLIBS="$OBJLIBS -fobjc-nonfragile-abi"
     GS_NONFRAGILE=1
     if test "$OBJC_RUNTIME_LIB" != "ng"; then
       AC_ARG_ENABLE(mixedabi,
@@ -2794,10 +2800,10 @@ GS_ADD_LIBRARY_PATH([${ffi_libdir}])
 fi
 
 if test "$do_broken_libffi" = "no"; then
-  if test "$PKGCONFIG" = "yes"; then
-    if pkg-config --exists libffi; then
+  if test -n "$PKG_CONFIG"; then
+    if $PKG_CONFIG --exists libffi; then
       pkg_config_libffi=yes
-      ffi_CFLAGS=`pkg-config --cflags libffi`;
+      ffi_CFLAGS=`$PKG_CONFIG --cflags libffi`;
       CPPFLAGS="$CPPFLAGS $ffi_CFLAGS"
       INCLUDE_FLAGS="$INCLUDE_FLAGS $ffi_CFLAGS"
     fi
@@ -3189,12 +3195,12 @@ if test $enable_tls = yes; then
   saved_LIBS="$LIBS"
   saved_CFLAGS="$CFLAGS"
 
-  if test $PKGCONFIG = yes; then
+  if test -n "$PKG_CONFIG"; then
     if pkg-config --exists gnutls; then
       AC_MSG_CHECKING(gnutls support)
       HAVE_GNUTLS=1
-      TLS_CFLAGS=`pkg-config --cflags gnutls`
-      TLS_LIBS=`pkg-config --libs gnutls`
+      TLS_CFLAGS=`$PKG_CONFIG --cflags gnutls`
+      TLS_LIBS=`$PKG_CONFIG --libs gnutls`
     fi
   fi
 
@@ -3315,7 +3321,7 @@ AC_ARG_WITH(icu-library,
 
 if test $enable_icu = yes; then
   if test "$enable_icu_config" = "yes"; then
-    AC_CHECK_ICU(4.6, have_icu=yes, have_icu=no)
+    AC_CHECK_ICU(50, have_icu=yes, have_icu=no)
   else
     have_icu=no;
     AC_CHECKING([for libicu (icu-config disabled)])
@@ -3325,6 +3331,8 @@ if test $enable_icu = yes; then
     saved_LDFLAGS="$LDFLAGS";
     LDFLAGS="$LDFLAGS $LIBS $ICU_LDFLAGS -licui18n -licuuc -licudata -lm"
     AC_TRY_LINK([],[], have_icu="yes", have_icu="no");
+    AC_CHECK_DECL([UDAT_PATTERN], [have_icu=yes], [have_icu=no],
+                                  [#include <unicode/udat.h>])
     LDFLAGS="$saved_LDFLAGS";
     ICU_LIBS="-licui18n -licuuc -licudata -lm"
   fi

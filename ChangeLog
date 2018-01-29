@@ -1,3 +1,228 @@
+2018-01-26  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* NSCharacterSets/GNUmakefile:
+	* NSCharacterSets/alphanumericCharSet.dat:
+	* NSCharacterSets/controlCharSet.dat:
+	* NSCharacterSets/dataToHeader.c:
+	* NSCharacterSets/decimalDigitCharSet.dat:
+	* NSCharacterSets/decomposableCharSet.dat:
+	* NSCharacterSets/illegalCharSet.dat:
+	* NSCharacterSets/letterCharSet.dat:
+	* NSCharacterSets/lowercaseLetterCharSet.dat:
+	* NSCharacterSets/newlineCharSet.dat:
+	* NSCharacterSets/nonBaseCharSet.dat:
+	* NSCharacterSets/punctuationCharSet.dat:
+	* NSCharacterSets/symbolAndOperatorCharSet.dat:
+	* NSCharacterSets/uppercaseLetterCharSet.dat:
+	* NSCharacterSets/whitespaceAndNlCharSet.dat:
+	* NSCharacterSets/whitespaceCharSet.dat:
+	Obsolete files deleted.
+	* NSCharacterSets/README.CharSet: updated
+	* Source/NSCharacterSetData.h: regenerated using the ucsdata library
+	and the charsets tools to take into account the fact that a unicode
+	zero width space should be counted as white space by us.
+	* Source/NSURL.m: A few OSX compatibility tweaks.
+	* Tests/base/NSURL/basic.m: A couple more OSX compatibility tests.
+
+2018-01-25  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Headers/Foundation/NSException.h:
+	* Source/NSException.m:
+	* Source/Additions/NSObject+GNUstepBase.m:
+	Mark exception raising methods with GS_NORETURN_METHOD.
+	Alter noreturn method implementations so the compiler knows
+	that they really don't return.
+	Use pragma to suppress warnings abnout noreturn methods whose
+	formal declaration says they return an id.
+
+2018-01-23  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/Additions/NSNumber+GNUstepBase.m:
+	* Source/GSValue.m:
+	* Source/NSZone.m:
+	* Tools/gdomap.c:
+	Fix various small issues picked by by automated checker.
+
+2018-01-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * Source/Makefile.postamble: Restore optimisation flags (remove 18
+	years ago) for NSInvocation and NSConnection (and remove obsolete
+	mframe setting) as suggested by Yavor Doganov.
+		
+2018-01-15  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/NSThread.m: Improve exception message when performing a
+	selector on a finished thread.
+	* Source/NSTask.m: Do not try to notify task completion on a thread
+	that is not executing.
+	* configure.ac: Fix for older versions of pkg-config
+	* configure: regenerate
+
+2018-01-14  Yavor Doganov  <yavor@gnu.org>
+ 
+ 	* Tests/base/NSXMLDocument/basic.m:
+ 	* Tests/base/NSXMLDocument/cdata.m:
+ 	* Tests/base/NSXMLNode/basic.m:
+ 	* Tests/base/NSXMLElement/attributes.m:
+ 	* Tests/base/NSXMLElement/basic.m:
+ 	* Tests/base/NSXMLElement/children.m:
+ 	* Tests/base/NSXMLElement/transfer.m:
+ 	* Tests/base/NSXMLNode/children.m:
+ 	* Tests/base/NSXMLNode/description.m:
+ 	* Tests/base/NSXMLNode/kinds.m:
+ 	* Tests/base/NSXMLNode/namespaces.m: Skip tests if libxml2 is not
+ 	available.
+ 	* Tests/base/NSTimeZone/use.m: Skip one more test if
+ 	NSLOCALE_SUPPORTED is undefined.
+ 	* Tests/base/NSRegularExpression/basic.m: Skip all tests if ICU is
+ 	not available.
+
+2018-01-14  Richard Frith-Macdonald <rfm@gnu.org>
+
+ 	* configure.ac: Remove explicit test for SAX2.h as we now assume
+	it is present based on the version of libxml2.
+	* configure: regenerate
+	* Source/GSXML.m: fix errors in loading/resolving of external entities
+	and fix the parsing methods to correctly return whether the xml was
+	validated against a DTD (when that feature is turned on).
+	* Tests/base/GSXML/basic.m: add a couple of tests for resolving
+	external references and validating against a DTD.
+
+2018-01-14  Yavor Doganov  <yavor@gnu.org>
+ 
+ 	* configure.ac: Use PKG_PROG_PKG_CONFIG instead of AC_PATH_PROG to
+ 	find pkg-config as it supports cross-compilation.
+ 	* configure.ac: Bump ICU requirement to >= 50 for UDAT_PATTERN.
+
+2018-01-11  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/NSXMLParser.m: OSX compatibility tweaks and correction
+	for setting entity resolution flag in sloppy parser.
+	* Headers/GNUstepBase/GSXML.h: new [-resolveEntities:] method to
+	enable resolving of external entities (now off by default).
+	* Source/Additions/GSXML.m: Changes to turn off resolving of
+	external entity references my default (adding a new method to turn
+	the feature back on) as a security fix to prevent xml injection
+	attacks (eg where an attacker gets the local password file substituted
+	into an xml document).
+	* Tests/base/NSXMLParser/parse.m: external entity resolution test.
+	* Tests/base/GSXML/basic.m: external entity resolution test.
+
+2018-01-04  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/NSObject.m: Fix bug with one path to object allocation
+	failing to record the object for memory debuggin purposes.
+
+2018-01-03  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/NSURL.m:
+	Tweaks for OSX compatibility ... treat a missinp path in an http URL
+	as an empty string rather than as nil.
+
+2018-01-02  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/NSFileManager.m:
+	* Tests/base/NSFileManager/general.m:
+	Added <graham@iamleeg.com> Graham Lee's fix for #51592 to not raise
+	an assertion, but rather call the handler if the source file being
+	copied does not exist.
+
+2017-12-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/NSSocketPort.m:
+	* Source/NSMessagePort.m:
+	* Source/win32/NSMessagePort.m:
+	There is a possible race condition when attempting to write a message
+	to a port; the port handle is added to the run loop and then the loop
+	is entered, but if an event occurs in the loop which invalidates the
+	handle and causes it to be removed from the loop before the lower
+	level code to wait for I/O is entered, the loop may never receive an
+	event on the handle and could wait indefinitely.
+	The solution is not to remove the handle from the loop when it is
+	invalidated or when an event occurs on an invalidated handle, but
+	only remove it in the method which added it.  Of course, this means
+	we must make certain to remove it when we should, which means that
+	the loop must be run inside an exception handler which makes sure to
+	remove the handle from the loop before re-raising the exception.
+
+2017-12-31  Ivan Vucica <ivan@vucica.net>
+
+	* ANNOUNCE
+	* NEWS
+	* Documentation/ReleaseNotes.gsdoc
+	* Documentation/news.texi: Update release notes for 1.25.1 to
+	take note of compatibility improvement changes since release
+	notes were written, and to fix a typo.
+
+2017-12-21  Riccardo Mottola <rm@gnu.org>
+
+	* Source/NSObject.m:
+	Cleanup previous commit.
+
+2017-12-21  Riccardo Mottola <rm@gnu.org>
+
+	* Source/NSObject.m:
+	Compatibility for OS/compiler not supporting weak symbols.
+
+2017-12-20  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Remove obsolete --enable-objc-nonfragile-abi flag
+	when building for ng.
+	* configure: regenerate
+
+2017-12-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Version: 1.25.1 release
+	* Documentation/ReleaseNotes.gsdoc: update for release
+	* Documentation/news.texi: update for release
+	* ANNOUNCE: regenerate
+	* INSTALL: regenerate
+	* NEWS: regenerate
+	* README: regenerate
+
+2017-12-18  Graham Lee  <graham@iamleeg.com>
+
+	* Source/NSJSONSerialization.m: Fix for bug #12 on github. This
+	makes sure that unsigned integer types are written as such,
+	avoiding a potential overflow.
+
+	* Tests/base/NSJSONSerialization/tests00.m: Test case for above.
+
+2017-12-17  David Chisnall <theraven@sucs.org>
+
+	* Source/NSObject.m:      Refactor refcount usage.
+
+	This makes it easier for the runtime to change how reference
+	counts are
+	stored by removing any refcount manipulation from -base when
+	the runtime
+	provides accessors.  This should have no functionality
+	change with
+	existing runtimes, but will let newer runtimes drop in
+	alternative
+	representations easily.
+
+2017-12-03  Fred Kiefer <fredkiefer@gmx.de>
+
+	* Headers/Foundation/NSFileManager.h
+	* Source/NSFileManager.m: Correct setting the delegate.
+	Add new symbolic link method.
+
+2017-11-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Source/NSArray.m: Fix for bug reported on github by zneak.
+
+2017-11-04  Fred Kiefer <fredkiefer@gmx.de>
+
+	* Source/GSLocale.m: Protect against
+	GSPrivateNativeCStringEncoding() corrupting the return value of
+	setlocale(). Bug #52331 reported by Jakub Wilk <jwilk@jwilk.net>.
+
+2017-10-26 Stefan Bidigaray <stefanbidi@gmail.com>
+
+	* Source/NSDateFormatter.m: Fix how UDateFormat is created. Fixes
+	bug #52011.
+
 2017-09-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Source/NSThread.m: Improve handling in case where we try to perform

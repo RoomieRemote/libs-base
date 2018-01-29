@@ -361,7 +361,8 @@ static NSStringEncoding	defaultEncoding;
   return _delegate;
 }
 
-- (void) setDelegate: (NSFileManager *)delegate {
+- (void) setDelegate: (id<NSFileManagerDelegate>)delegate
+{
   _delegate = delegate;
 }
 
@@ -1584,6 +1585,26 @@ static NSStringEncoding	defaultEncoding;
 		   error: (NSError**)error
 {
   return [self removeItemAtPath: [url path] error: error];
+}
+
+- (BOOL) createSymbolicLinkAtPath: (NSString*)path
+              withDestinationPath: (NSString*)destPath
+                            error: (NSError**)error
+{
+  BOOL  result;
+
+  DESTROY(_lastError);
+  result = [self createSymbolicLinkAtPath: path pathContent: destPath];
+
+  if (error != NULL)
+    {
+      if (NO == result)
+	{
+	  *error = [self _errorFrom: path to: destPath];
+	}
+    }
+
+  return result;
 }
 
 - (BOOL) fileExistsAtPath: (NSString*)path
@@ -2821,13 +2842,15 @@ static inline void gsedRelease(GSEnumeratedDirectory X)
   int		wbytes;
   char		buffer[bufsize];
 
-  /* Assumes source is a file and exists! */
-  NSAssert1 ([self fileExistsAtPath: source],
-    @"source file '%@' does not exist!", source);
-
   attributes = [self fileAttributesAtPath: source traverseLink: NO];
-  NSAssert1 (attributes, @"could not get the attributes for file '%@'",
-    source);
+  if (nil == attributes)
+    {
+      return [self _proceedAccordingToHandler: handler
+				     forError: @"source file does not exist"
+				       inPath: source
+				     fromPath: source
+				       toPath: destination];
+    }
 
   fileSize = [attributes fileSize];
   fileMode = [attributes filePosixPermissions];
