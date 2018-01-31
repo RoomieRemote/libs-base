@@ -731,7 +731,7 @@ gnustep_base_thread_callback(void)
 
 @interface ThreadBlockWrapper : NSObject
 - (instancetype) initWithBlock:(void (^)(void))block;
-- (void)invokeWithTimer:(NSTimer *)timer;
+- (void)invokeWithIgnored:(id)ignored;
 @end
 
 @implementation ThreadBlockWrapper
@@ -843,7 +843,7 @@ unregisterActiveThread(NSThread *thread)
 + (void) detachNewThreadWithBlock:(void (^)(void))block
 {
   ThreadBlockWrapper *wrapper = [[ThreadBlockWrapper alloc] initWithBlock:block];
-  [self detachNewThreadSelector:@selector(invokeWithIgnored) toTarget:wrapper withObject:nil];
+  [self detachNewThreadSelector:@selector(invokeWithIgnored:) toTarget:wrapper withObject:nil];
 }
 
 + (void) exit
