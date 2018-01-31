@@ -252,6 +252,11 @@ static NSRecursiveLock *classLock = nil;
   return self;
 }
 
++ (id) calendarWithIdentifier: (NSString *) string
+{
+  return [[self alloc] initWithCalendarIdentifier:string];
+}
+
 - (id) initWithCalendarIdentifier: (NSString *) string
 {
   NSAssert(0 == _NSCalendarInternal, NSInvalidArgumentException);
@@ -612,6 +617,12 @@ do \
 #else
   return nil;
 #endif
+}
+
+- (NSDate *)startOfDayForDate:(NSDate *)date
+{
+  NSDateComponents *components = [self components:(NSEraCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+  return [self dateFromComponents:components];
 }
 
 - (NSLocale *) locale

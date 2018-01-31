@@ -260,6 +260,8 @@ enum
 
 + (instancetype) currentCalendar;
 
++ (instancetype) calendarWithIdentifier: (NSString *) string;
+
 - (instancetype) initWithCalendarIdentifier: (NSString *) string;
 - (NSString *) calendarIdentifier;
 
@@ -284,6 +286,8 @@ enum
                              toDate: (NSDate *) date
                             options: (NSUInteger) opts;
 - (NSDate *) dateFromComponents: (NSDateComponents *) comps;
+
+- (NSDate *)startOfDayForDate:(NSDate *)date;
 
 - (NSLocale *) locale;
 - (void)setLocale: (NSLocale *) locale;
