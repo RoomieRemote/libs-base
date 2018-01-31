@@ -36,25 +36,26 @@
 #import "Foundation/NSInvocation.h"
 
 @interface TimerBlockWrapper : NSObject
+@property (nonatomic, copy) void (^block)(NSTimer *timer);
 - (instancetype) initWithBlock:(void (^)(NSTimer *timer))block;
 - (void)invokeWithTimer:(NSTimer *)timer;
 @end
 
 @implementation TimerBlockWrapper
-{
-	void (^_block)(NSTimer *timer);
-}
 
 - (instancetype) initWithBlock:(void (^)(NSTimer *timer))block
 {
 	if (!(self = [super init])) { return nil; }
-	_block = block;
+	self.block = block;
 	return self;
 }
 
 - (void)invokeWithTimer:(NSTimer *)timer
 {
-	_block(timer);
+  if (self.block)
+  {
+	  self.block(timer);
+  }
 }
 
 @end

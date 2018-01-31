@@ -730,25 +730,26 @@ gnustep_base_thread_callback(void)
 
 
 @interface ThreadBlockWrapper : NSObject
+@property (nonatomic, copy) void (^block)(void);
 - (instancetype) initWithBlock:(void (^)(void))block;
 - (void)invokeWithIgnored:(id)ignored;
 @end
 
 @implementation ThreadBlockWrapper
-{
-	void (^_block)(void);
-}
 
 - (instancetype) initWithBlock:(void (^)(void))block
 {
 	if (!(self = [super init])) { return nil; }
-	_block = block;
+	self.block = block;
 	return self;
 }
 
 - (void)invokeWithIgnored:(id)ignored
 {
-	_block();
+  if (self.block)
+  {
+	  self.block();
+  }
 }
 
 @end
