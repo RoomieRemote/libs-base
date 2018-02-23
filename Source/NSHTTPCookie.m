@@ -287,17 +287,6 @@ static NSRange GSRangeOfCookie(NSString *string);
   if ((self = [super init]) == nil)
     return nil;
 
-  /* Check a few values.  Based on Mac OS X tests. */
-  if (![self _isValidProperty: [properties objectForKey: NSHTTPCookiePath]] 
-    || ![self _isValidProperty: [properties objectForKey: NSHTTPCookieDomain]]
-    || ![self _isValidProperty: [properties objectForKey: NSHTTPCookieName]]
-    || ![self _isValidProperty: [properties objectForKey: NSHTTPCookieValue]]
-    )
-    {
-      [self release];
-      return nil;
-    }
-
   rawProps = [[properties mutableCopy] autorelease];
   if ([rawProps objectForKey: @"Created"] == nil)
     {
