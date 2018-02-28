@@ -49,6 +49,7 @@ GS_EXPORT NSString * const NSDefaultRunLoopMode;
   NSMapTable		*_contextMap;
   NSMutableArray	*_contextStack;
   NSMutableArray	*_timedPerformers;
+  NSMutableArray	*_selectorQueue;
   void			*_extra;
 #endif
 }

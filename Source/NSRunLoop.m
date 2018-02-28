@@ -411,6 +411,17 @@ static inline BOOL timerInvalidated(NSTimer *t)
 @end
 #endif
 
+@interface SelectorQueueParameters : NSObject
+@property(assign) SEL selector;
+@property(strong) id target;
+@property(strong) id argument;
+@property(assign) NSUInteger order;
+@property(strong) NSArray *modes;
+@end
+
+@implementation SelectorQueueParameters
+@end
+
 @interface NSRunLoop (Private)
 
 - (void) _addWatcher: (GSRunLoopWatcher*)item
@@ -567,20 +578,21 @@ static inline BOOL timerInvalidated(NSTimer *t)
   return nil;
 }
 
-- (id) _init
+- (id)_init
 {
   self = [super init];
   if (self != nil)
-    {
-      _contextStack = [NSMutableArray new];
-      _contextMap = NSCreateMapTable (NSNonRetainedObjectMapKeyCallBacks,
-					 NSObjectMapValueCallBacks, 0);
-      _timedPerformers = [[NSMutableArray alloc] initWithCapacity: 8];
-#ifdef	HAVE_POLL_F
-      _extra = NSZoneMalloc(NSDefaultMallocZone(), sizeof(pollextra));
-      memset(_extra, '\0', sizeof(pollextra));
+  {
+    _contextStack = [NSMutableArray new];
+    _contextMap = NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,
+                                   NSObjectMapValueCallBacks, 0);
+    _timedPerformers = [[NSMutableArray alloc] initWithCapacity:8];
+#ifdef HAVE_POLL_F
+    _extra = NSZoneMalloc(NSDefaultMallocZone(), sizeof(pollextra));
+    memset(_extra, '\0', sizeof(pollextra));
 #endif
-    }
+    _selectorQueue = [NSMutableArray array];
+  }
   return self;
 }
 
@@ -1127,6 +1139,111 @@ updateTimer(NSTimer *t, NSDate *d, NSTimeInterval now)
   return when;
 }
 
+- (void)enqueueSelector:(SEL)aSelector
+                 target:(id)target
+               argument:(id)argument
+                  order:(NSUInteger)order
+                  modes:(NSArray *)modes
+{
+  SelectorQueueParameters *p = [[SelectorQueueParameters alloc] init];
+  p.selector = aSelector;
+  p.target = target;
+  p.argument = argument;
+  p.order = order;
+  p.modes = modes;
+  @synchronized(_selectorQueue) { [_selectorQueue addObject:p]; }
+}
+
+- (void)dequeueSelector:(SEL)aSelector
+                 target:(id)target
+               argument:(id)argument
+                  order:(NSUInteger)order
+                  modes:(NSArray *)modes
+{
+  unsigned count = [modes count];
+
+  if (count > 0)
+  {
+    NSString *array[count];
+    GSRunLoopPerformer *item;
+
+    item = [[GSRunLoopPerformer alloc] initWithSelector:aSelector
+                                                 target:target
+                                               argument:argument
+                                                  order:order];
+
+    if ([modes isProxy])
+    {
+      unsigned i;
+
+      for (i = 0; i < count; i++)
+      {
+        array[i] = [modes objectAtIndex:i];
+      }
+    }
+    else
+    {
+      [modes getObjects:array];
+    }
+    while (count-- > 0)
+    {
+      NSString *mode = array[count];
+      unsigned end;
+      unsigned i;
+      GSRunLoopCtxt *context;
+      GSIArray performers;
+
+      context = NSMapGet(_contextMap, mode);
+      if (context == nil)
+      {
+        context = [[GSRunLoopCtxt alloc] initWithMode:mode extra:_extra];
+        NSMapInsert(_contextMap, context->mode, context);
+        RELEASE(context);
+      }
+      performers = context->performers;
+
+      end = GSIArrayCount(performers);
+      for (i = 0; i < end; i++)
+      {
+        GSRunLoopPerformer *p;
+
+        p = GSIArrayItemAtIndex(performers, i).obj;
+        if (p->order > order)
+        {
+          GSIArrayInsertItem(performers, (GSIArrayItem)((id)item), i);
+          break;
+        }
+      }
+      if (i == end)
+      {
+        GSIArrayInsertItem(performers, (GSIArrayItem)((id)item), i);
+      }
+      i = GSIArrayCount(performers);
+      if (i % 1000 == 0 && i > context->maxPerformers)
+      {
+        context->maxPerformers = i;
+        NSLog(@"WARNING ... there are %u performers scheduled"
+              @" in mode %@ of %@\n(Latest: [%@ %@])",
+              i, mode, self, NSStringFromClass([target class]),
+              NSStringFromSelector(aSelector));
+      }
+    }
+    RELEASE(item);
+  }
+}
+
+- (void)dequeueAllSelectors
+{
+  @synchronized(_selectorQueue)
+  {
+    for (SelectorQueueParameters *p in _selectorQueue)
+    {
+      [self dequeueSelector:p.selector target:p.target argument:p.argument order:p.order modes:p.modes];
+    }
+    [_selectorQueue removeAllObjects];
+  }
+}
+
 /**
  * Listen for events from input sources.<br />
  * If limit_date is nil or in the past, then don't wait;
@@ -1136,126 +1253,124 @@ updateTimer(NSTimer *t, NSDate *d, NSTimeInterval now)
  * If the supplied mode is nil, uses NSDefaultRunLoopMode.<br />
  * If there are no input sources or timers in the mode, returns immediately.
  */
-- (void) acceptInputForMode: (NSString*)mode
-		 beforeDate: (NSDate*)limit_date
+- (void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)limit_date
 {
-  GSRunLoopCtxt		*context;
-  NSTimeInterval	ti = 0;
-  int			timeout_ms;
-  NSString		*savedMode = _currentMode;
-  NSAutoreleasePool	*arp = [NSAutoreleasePool new];
+  GSRunLoopCtxt *context;
+  NSTimeInterval ti = 0;
+  int timeout_ms;
+  NSString *savedMode = _currentMode;
+  NSAutoreleasePool *arp = [NSAutoreleasePool new];
 
   NSAssert(mode, NSInvalidArgumentException);
   if (mode == nil)
-    {
-      mode = NSDefaultRunLoopMode;
-    }
+  {
+    mode = NSDefaultRunLoopMode;
+  }
   context = NSMapGet(_contextMap, mode);
   if (nil == context)
-    {
-      return;
-    }
+  {
+    return;
+  }
   _currentMode = mode;
 
-  [self _checkPerformers: context];
+  [self _checkPerformers:context];
 
   NS_DURING
-    {
-      BOOL      done = NO;
-      NSDate    *when;
+  {
+    BOOL done = NO;
+    NSDate *when;
 
-      while (NO == done)
+    while (NO == done)
+    {
+      [arp emptyPool];
+      when = [self _limitDateForContext:context];
+      if (nil == when)
+      {
+        NSDebugMLLog(@"NSRunLoop", @"no inputs or timers in mode %@", mode);
+        GSPrivateNotifyASAP(_currentMode);
+        GSPrivateNotifyIdle(_currentMode);
+        /* Pause until the limit date or until we might have
+         * a method to perform in this thread.
+         */
+        [GSRunLoopCtxt awakenedBefore:nil];
+        [self _checkPerformers:context];
+        GSPrivateNotifyASAP(_currentMode);
+        [_contextStack removeObjectIdenticalTo:context];
+        _currentMode = savedMode;
+        [arp drain];
+        NS_VOIDRETURN;
+      }
+      else
+      {
+        if (nil == limit_date)
         {
-          [arp emptyPool];
-          when = [self _limitDateForContext: context];
-          if (nil == when)
-            {
-              NSDebugMLLog(@"NSRunLoop",
-                @"no inputs or timers in mode %@", mode);
-              GSPrivateNotifyASAP(_currentMode);
-              GSPrivateNotifyIdle(_currentMode);
-              /* Pause until the limit date or until we might have
-               * a method to perform in this thread.
-               */
-              [GSRunLoopCtxt awakenedBefore: nil];
-              [self _checkPerformers: context];
-              GSPrivateNotifyASAP(_currentMode);
-              [_contextStack removeObjectIdenticalTo: context];
-              _currentMode = savedMode;
-              [arp drain];
-              NS_VOIDRETURN;
-            }
-          else
-            {
-              if (nil == limit_date)
-                {
-                  when = nil;
-                }
-              else
-                {
-                  when = [when earlierDate: limit_date];
-                }
-            }
-
-          /* Find out how much time we should wait, and set SELECT_TIMEOUT. */
-          if (nil == when || (ti = [when timeIntervalSinceNow]) <= 0.0)
-            {
-              /* Don't wait at all. */
-              timeout_ms = 0;
-            }
-          else
-            {
-              /* Wait until the LIMIT_DATE. */
-              if (ti >= INT_MAX / 1000)
-                {
-                  timeout_ms = INT_MAX;	// Far future.
-                }
-              else
-                {
-                  timeout_ms = (ti * 1000.0);
-                }
-            }
-
-          NSDebugMLLog(@"NSRunLoop",
-            @"accept I/P before %d millisec from now in %@",
-            timeout_ms, mode);
-
-	  if ([_contextStack indexOfObjectIdenticalTo: context] == NSNotFound)
-	    {
-	      [_contextStack addObject: context];
-	    }
-          done = [context pollUntil: timeout_ms within: _contextStack];
-          if (NO == done)
-            {
-              GSPrivateNotifyIdle(_currentMode);
-              if (nil == limit_date || [limit_date timeIntervalSinceNow] <= 0.0)
-                {
-                  done = YES;
-                }
-            }
-          [self _checkPerformers: context];
-          GSPrivateNotifyASAP(_currentMode);
-          [context endPoll];
-
-	  /* Once a poll has been completed on a context, we can remove that
-	   * context from the stack even if it is actually polling at an outer
-	   * level of re-entrancy ... since the poll we have just done will
-	   * have handled any events that the outer levels would have wanted
-	   * to handle, and the polling for this context will be marked as
-	   * ended.
-	   */
-	  [_contextStack removeObjectIdenticalTo: context];
+          when = nil;
         }
+        else
+        {
+          when = [when earlierDate:limit_date];
+        }
+      }
 
-      _currentMode = savedMode;
-    }
-  NS_HANDLER
-    {
-      _currentMode = savedMode;
+      /* Find out how much time we should wait, and set SELECT_TIMEOUT. */
+      if (nil == when || (ti = [when timeIntervalSinceNow]) <= 0.0)
+      {
+        /* Don't wait at all. */
+        timeout_ms = 0;
+      }
+      else
+      {
+        /* Wait until the LIMIT_DATE. */
+        if (ti >= INT_MAX / 1000)
+        {
+          timeout_ms = INT_MAX; // Far future.
+        }
+        else
+        {
+          timeout_ms = (ti * 1000.0);
+        }
+      }
+
+      NSDebugMLLog(@"NSRunLoop",
+                   @"accept I/P before %d millisec from now in %@", timeout_ms,
+                   mode);
+
+      if ([_contextStack indexOfObjectIdenticalTo:context] == NSNotFound)
+      {
+        [_contextStack addObject:context];
+      }
+      done = [context pollUntil:timeout_ms within:_contextStack];
+      if (NO == done)
+      {
+        GSPrivateNotifyIdle(_currentMode);
+        if (nil == limit_date || [limit_date timeIntervalSinceNow] <= 0.0)
+        {
+          done = YES;
+        }
+      }
+      [self _checkPerformers:context];
+      GSPrivateNotifyASAP(_currentMode);
       [context endPoll];
-      [_contextStack removeObjectIdenticalTo: context];
-      [localException raise];
+
+      /* Once a poll has been completed on a context, we can remove that
+       * context from the stack even if it is actually polling at an outer
+       * level of re-entrancy ... since the poll we have just done will
+       * have handled any events that the outer levels would have wanted
+       * to handle, and the polling for this context will be marked as
+       * ended.
+       */
+      [_contextStack removeObjectIdenticalTo:context];
     }
+
+    _currentMode = savedMode;
+  }
+  NS_HANDLER
+  {
+    _currentMode = savedMode;
+    [context endPoll];
+    [_contextStack removeObjectIdenticalTo:context];
+    [localException raise];
+  }
   NS_ENDHANDLER
   NSDebugMLLog(@"NSRunLoop", @"accept I/P completed in %@", mode);
   [arp drain];
@@ -1269,6 +1384,8 @@ updateTimer(NSTimer *t, NSDate *d, NSTimeInterval now)
   NSDate		*d;
 
   NSAssert(mode != nil, NSInvalidArgumentException);
+
+  [self dequeueAllSelectors];
 
   /* Process any pending notifications.
    */
@@ -1464,83 +1581,13 @@ updateTimer(NSTimer *t, NSDate *d, NSTimeInterval now)
  * order value are sent first.<br />
  * If the modes array is empty, this method has no effect.
  */
-- (void) performSelector: (SEL)aSelector
-		  target: (id)target
-		argument: (id)argument
-		   order: (NSUInteger)order
-		   modes: (NSArray*)modes
+- (void)performSelector:(SEL)aSelector
+                 target:(id)target
+               argument:(id)argument
+                  order:(NSUInteger)order
+                  modes:(NSArray *)modes
 {
-  unsigned		count = [modes count];
-
-  if (count > 0)
-    {
-      NSString			*array[count];
-      GSRunLoopPerformer	*item;
-
-      item = [[GSRunLoopPerformer alloc] initWithSelector: aSelector
-						   target: target
-						 argument: argument
-						    order: order];
-
-      if ([modes isProxy])
-	{
-	  unsigned	i;
-
-	  for (i = 0; i < count; i++)
-	    {
-	      array[i] = [modes objectAtIndex: i];
-	    }
-	}
-      else
-	{
-          [modes getObjects: array];
-	}
-      while (count-- > 0)
-	{
-	  NSString	*mode = array[count];
-	  unsigned	end;
-	  unsigned	i;
-	  GSRunLoopCtxt	*context;
-	  GSIArray	performers;
-
-	  context = NSMapGet(_contextMap, mode);
-	  if (context == nil)
-	    {
-	      context = [[GSRunLoopCtxt alloc] initWithMode: mode
-						      extra: _extra];
-	      NSMapInsert(_contextMap, context->mode, context);
-	      RELEASE(context);
-	    }
-	  performers = context->performers;
-
-	  end = GSIArrayCount(performers);
-	  for (i = 0; i < end; i++)
-	    {
-	      GSRunLoopPerformer	*p;
-
-	      p = GSIArrayItemAtIndex(performers, i).obj;
-	      if (p->order > order)
-		{
-		  GSIArrayInsertItem(performers, (GSIArrayItem)((id)item), i);
-		  break;
-		}
-	    }
-	  if (i == end)
-	    {
-	      GSIArrayInsertItem(performers, (GSIArrayItem)((id)item), i);
-	    }
-	  i = GSIArrayCount(performers);
-	  if (i % 1000 == 0 && i > context->maxPerformers)
-	    {
-	      context->maxPerformers = i;
-              NSLog(@"WARNING ... there are %u performers scheduled"
-                @" in mode %@ of %@\n(Latest: [%@ %@])",
-                i, mode, self, NSStringFromClass([target class]),
-                NSStringFromSelector(aSelector));
-	    }
-	}
-      RELEASE(item);
-    }
+  [self enqueueSelector:aSelector target:target argument:argument order:order modes:modes];
 }
 
 /**
